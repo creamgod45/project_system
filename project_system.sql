@@ -13,7 +13,7 @@ CREATE TABLE `project_system`.`project` (
 `project_token`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `project_title`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `project_content` LONGTEXT CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`project_member`  LONGTEXT CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,    // json  
+`project_member`  LONGTEXT CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `created_time`    VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_bin;
 
