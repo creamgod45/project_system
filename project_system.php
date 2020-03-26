@@ -29,7 +29,7 @@
 		
 		// 管理員登入
 		function admin_auth($username, $password){
-			if( $username === "admin" and $password === "admin"){
+			if( $username === "admin" and $password === "1234"){
 				return true;
 			}else{
 				return false;
@@ -64,6 +64,43 @@
 			$sql = "INSERT INTO `member`(`access_token`, `name`, `username`, `password`, `created_time`) 
 			                     VALUES ('$access_token','$name','$username','$password','$time')";
 			if($conn->query($sql)){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		function get_member($access_token){
+			$conn = $this->__construct();
+			$sql = "SELECT * FROM `member`";
+			$result = $conn->query($sql);
+			$x = 1;
+			$object = [];
+			while($row = mysqli_fetch_assoc($result)){
+				$object[$x] = $row;
+				unset($row);
+				$x++;
+			}
+			return $object;
+		}
+		
+		function get_once_member($access_token){
+			$conn = $this->__construct();
+			$sql = "SELECT * FROM `member` WHERE `access_token` = '$access_token'";
+			$result = $conn->query($sql);
+			$x = 1;
+			$object = [];
+			while($row = mysqli_fetch_assoc($result)){
+				$object[$x] = $row;
+				unset($row);
+				$x++;
+			}
+			return $object;
+		}
+		
+		// 識別管理員
+		function is_adminstrator($admin){
+			if($admin){
 				return true;
 			}else{
 				return false;

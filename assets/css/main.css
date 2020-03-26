@@ -135,3 +135,31 @@ nav{
 	font-size:18px;
 	font-weight:bold;
 }
+
+.nav_space{
+	margin-top:48px;
+}
+
+.user_card {
+	width:auto;
+	display:block;
+	margin:8px;
+	border:solid 2px #ccc;
+	padding:16px;
+}
+
+.dialog {
+	visibility: visible;
+	position:absolute;
+	top:0;
+	left:0;
+	display: flex;
+	height: 100vh;
+	align-items: center;
+	justify-content: center;
+	z-index:1;
+}
+
+.dialog_main {
+	
+}
