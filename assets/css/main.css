@@ -1,165 +1,232 @@
-body,html{
-	margin:0;
-	padding:0;
-	font-size:16px;
-	font-family: Microsoft JhengHei, Segoe UI;
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    width: 100vw;
+    height: 100vh;
+    font-family: Microsoft JhengHei, Segoe UI;
 }
+
 .sui {
-	font-family:Segoe UI !important;
-}
-h1{margin:unset;}
-input{
-	border:unset;
-	outline:unset;
-}
-nav{
-	display:block;
-	text-align:center;
-	width:100vw;
-	border-bottom:solid 2px #000;
-	position:absolute;
-	top:0;
-	left:0;
-	background:white;
-}
-	ul { /* 取消ul預設的內縮及樣式 */
-        margin: 0;
-        padding: 0;
-        list-style: none;
-	}
-
-    ul.down-menu {
-        border: #ccc 1px solid;
-		border-radius:3px;
-        display: inline-block;
-        font-family: 'Open Sans', Arial, sans-serif;
-        font-size: 13px;
-    }
-
-    ul.down-menu li {
-        position: relative;
-        white-space: nowrap;
-        border-right: #ccc 1px solid;
-    }
-
-    ul.down-menu > li:last-child {
-        border-right: none;
-    }
-
-    ul.down-menu > li {
-        float: left; /* 只有第一層是靠左對齊*/
-    }
-
-     ul.down-menu a {
-        background-color: #fff;
-        color: #333;
-        display: block;
-        padding: 0 16px;
-        text-decoration: none;
-        line-height: 40px;
-
-    }
-    ul.down-menu a:hover { /* 滑鼠滑入按鈕變色*/
-        background-color: #ef5c28;
-        color: #fff;
-    }
-    ul.down-menu li:hover > a { /* 滑鼠移入次選單上層按鈕保持變色*/
-        background-color: #ef5c28;
-        color: #fff;
-    }
-	ul.down-menu ul {
-        border: #ccc 1px solid;
-        position: absolute;
-        z-index: 99;
-        left: -1px;
-        top: 100%;
-       min-width: 180px;
-    }
-
-    ul.down-menu ul li {
-        border-bottom: #ccc 1px solid;
-    }
-
-    ul.down-menu ul li:last-child {
-        border-bottom: none;
-    }
-
-    ul.down-menu ul ul { /*第三層以後的選單出現位置與第二層不同*/
-        z-index: 999;
-        top: 10px;
-        left: 90%;
-    }
-	ul.down-menu ul { /*隱藏次選單*/
-        display: none;
-    }
-
-    ul.down-menu li:hover > ul { /* 滑鼠滑入展開次選單*/
-        display: block;
-    }
-	
-.login_panel{
-  display: flex;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
-}
-.card{
-	background: #e0e0e0;
-	padding: 16px;
-	border: solid 3px #ccc;
-	border-radius: 3px;
+    font-family: Segoe UI !important;
 }
 
-.inputs_box{
-	border:solid 2px #ccc;
-	border-radius: 3px;
-	display:flex;
-	margin-bottom: 12px;
+h1 {
+    margin: unset;
+}
+
+input {
+    border: unset;
+    outline: unset;
+}
+
+nav {
+    display: block;
+    text-align: center;
+    width: 100vw;
+    border-bottom: solid 2px #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: white;
+}
+
+ul {
+    /* 取消ul預設的內縮及樣式 */
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.down-menu {
+    border: #ccc 1px solid;
+    border-radius: 3px;
+    display: inline-block;
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 13px;
+}
+
+ul.down-menu li {
+    position: relative;
+    white-space: nowrap;
+    border-right: #ccc 1px solid;
+}
+
+ul.down-menu>li:last-child {
+    border-right: none;
+}
+
+ul.down-menu>li {
+    float: left;
+    /* 只有第一層是靠左對齊*/
+}
+
+ul.down-menu a {
+    background-color: #fff;
+    color: #333;
+    display: block;
+    padding: 0 16px;
+    text-decoration: none;
+    line-height: 40px;
+
+}
+
+ul.down-menu a:hover {
+    /* 滑鼠滑入按鈕變色*/
+    background-color: #ef5c28;
+    color: #fff;
+}
+
+ul.down-menu li:hover>a {
+    /* 滑鼠移入次選單上層按鈕保持變色*/
+    background-color: #ef5c28;
+    color: #fff;
+}
+
+ul.down-menu ul {
+    border: #ccc 1px solid;
+    position: absolute;
+    z-index: 99;
+    left: -1px;
+    top: 100%;
+    min-width: 180px;
+}
+
+ul.down-menu ul li {
+    border-bottom: #ccc 1px solid;
+}
+
+ul.down-menu ul li:last-child {
+    border-bottom: none;
+}
+
+ul.down-menu ul ul {
+    /*第三層以後的選單出現位置與第二層不同*/
+    z-index: 999;
+    top: 10px;
+    left: 90%;
+}
+
+ul.down-menu ul {
+    /*隱藏次選單*/
+    display: none;
+}
+
+ul.down-menu li:hover>ul {
+    /* 滑鼠滑入展開次選單*/
+    display: block;
+}
+
+.login_panel {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    background: #e0e0e0;
+    padding: 16px;
+    border: solid 3px #ccc;
+    border-radius: 3px;
+}
+
+.inputs_box {
+    border: solid 2px #ccc;
+    border-radius: 3px;
+    display: flex;
+    margin-bottom: 12px;
 }
 
 .inputs_box label {
-	padding: 4px 8px;
-	background-color: #bbb;
-	font-size:18px;
-}
-.inputs_box input[type=text],.inputs_box input[type=password]{
-	padding:8px;
-	font-size: 18px;
+    padding: 4px 8px;
+    background-color: #bbb;
+    font-size: 18px;
 }
 
-.submit{
-	padding:8px;
-	width:100%;
-	background-color:rgb(94,158,214);
-	border-radius:5px;
-	font-size:18px;
-	font-weight:bold;
+.inputs_box input[type=text],
+.inputs_box input[type=password] {
+    padding: 8px;
+    font-size: 18px;
 }
 
-.nav_space{
-	margin-top:48px;
+.submit {
+    padding: 8px;
+    width: 100%;
+    background-color: rgb(94, 158, 214);
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.nav_space {
+    margin-top: 48px;
 }
 
 .user_card {
-	width:auto;
-	display:block;
-	margin:8px;
-	border:solid 2px #ccc;
-	padding:16px;
+    width: auto;
+    display: block;
+    margin: 8px;
+    border: solid 2px #ccc;
+    padding: 16px;
 }
 
 .dialog {
-	visibility: visible;
-	position:absolute;
-	top:0;
-	left:0;
-	display: flex;
-	height: 100vh;
-	align-items: center;
-	justify-content: center;
-	z-index:1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.dialog_bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+    z-index:2;
+    background:black;
+    opacity: 0.7;
+    filter: blur(1px);
 }
 
 .dialog_main {
-	
+    padding: 16px;
+    background: white;
+    width: 350px;
+    height: auto;
+    border-radius: 5px;
+    border-top: #3b3b3b solid 10px;
+    z-index: 1;
+}
+
+.dialog_main .input{
+    border: 2px rgb(49, 49, 49) solid;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    padding: 8px;
+    width: 100%;
+
+}
+
+.dialog_main .btn{
+    background: #19d16c;
+    color: black;
+    font-size: 18px;
+    transition: 0.5s;
+}
+
+.dialog_main .btn:hover{
+    background: #108143;
+    color: white;
+    transition: 0.5s;
 }

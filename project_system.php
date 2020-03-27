@@ -69,6 +69,32 @@
 				return false;
 			}
 		}
+
+		function remove_member($access_token){
+			$conn =  $this->__construct();
+			$sql = "DELETE FROM `member` WHERE `access_token` = '$access_token'";
+			$query = $conn->query($sql);
+			if($query){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		function edit_member($option){
+			$conn =  $this->__construct();
+			$access_token = $option[0];
+			$name = $option[1];
+			$username = $option[2];
+			$password = $option[3];
+			$sql = "UPDATE `member` SET `name`='$name',`username`='$username',`password`='$password' WHERE `access_token` = '$access_token'";
+			$query = $conn->query($sql);
+			if($query){
+				return true;
+			}else{
+				return false;
+			}
+		}
 		
 		function get_member($access_token){
 			$conn = $this->__construct();
