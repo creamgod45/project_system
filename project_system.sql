@@ -9,7 +9,6 @@ CREATE TABLE `project_system`.`member` (
 
 CREATE TABLE `project_system`.`project` ( 
 `id` INT(255)     NOT NULL AUTO_INCREMENT , 
-`access_token`    VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `project_token`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `project_title`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `project_content` LONGTEXT CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
@@ -19,7 +18,6 @@ CREATE TABLE `project_system`.`project` (
 
 CREATE TABLE `project_system`.`subject` ( 
 `id` INT(255)     NOT NULL AUTO_INCREMENT , 
-`access_token`    VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `project_token`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `theme_key`       VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `subject_title`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,

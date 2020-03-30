@@ -14,7 +14,7 @@
 		
 		// 資料庫連接
 		function __construct(){
-			$mysqli = mysqli_connect("localhost","root","","project_system");
+			$mysqli = mysqli_connect("localhost","admin","1234","project_system");
 			if($mysqli->connect_error){
 				die("mysql error:".$mysqli->connect_error);
 				exit;
@@ -24,12 +24,13 @@
 		}
 		
 		function token(){
-			return md5(time()/2);
+			return md5(time());
 		}
 		
 		// 管理員登入
 		function admin_auth($username, $password){
 			if( $username === "admin" and $password === "1234"){
+				$_SESSION['admin_key']=md5(time());
 				return true;
 			}else{
 				return false;
@@ -145,6 +146,15 @@
             }else{
                 return false;
             }
+		}
+
+		//============================ PROJECT ============================//
+
+		function createproject($option){
+			$pj_name = $option[0];
+			$pj_dec = $option[1];
+			$pj_token = $this->token();
+			$
 		}
 		
 		// 資料庫斷開連接

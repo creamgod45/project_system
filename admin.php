@@ -34,13 +34,14 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 		$object=[];
 		$tmp1 = explode('/',$_POST['pjt_array']);
 		unset($tmp1[0]);
-		for ($i=1; $i <= 10; $i++) { 
+		for ($i=1; $i <= count($tmp1); $i++) { 
 			$tmp2 = explode(':',$tmp1[$i]);
 			$object[$i]['pjt_name']= $tmp2[0];
 			$object[$i]['pjt_dec']= $tmp2[1];
 		}
 		$json = json_encode($object);
-		
+		$pj_name = $_POST['pj_name'];
+		$pj_dec = $_POST['pj_dec'];
 	}else{
 		echo '
 			<html>
