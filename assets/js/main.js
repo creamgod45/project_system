@@ -39,6 +39,21 @@ $(function(){
 		$('#cps_bg').hide();
 	});
 
+
+	// 編輯專案成員
+	$('#epm').click(()=>{
+		$('#epms').show();
+		$('#epms_bg').show();
+	});
+	$('#close_epms').click(()=>{
+		$('#epms').hide();
+		$('#epms_bg').hide();
+	});
+
+	$('.ui-menu-item-wrapper').click(()=>{
+
+	});
+
 });
 
 // 建立專案
@@ -61,4 +76,13 @@ function pjt_load(){
 	}
 	$('#pjt_array').attr('value', object);
 	return true;
+}
+
+function leader_locker(_object, name){
+	$('.'+name).attr('disabled',true);
+	$(_object).attr('disabled',false);
+}
+
+function leader_unlocker(name){
+	$('.'+name).attr('disabled',false);
 }

@@ -54,6 +54,14 @@
 				return false;
 			}
 		}
+
+		function findmember($key,$str){
+			$conn = $this->__construct();
+			$sql = "SELECT * FROM `member` WHERE `$key`='$str'";
+			$result = $conn->query($sql);
+			$row = mysqli_fetch_assoc($result);
+			return $row;
+		}
 		
 		function create_member($option){
 			$conn = $this->__construct();
@@ -151,10 +159,68 @@
 		//============================ PROJECT ============================//
 
 		function createproject($option){
-			$pj_name = $option[0];
-			$pj_dec = $option[1];
+			$conn = $this->__construct();
+			$pj_title = $option[0];
+			$pj_content = $option[1];
 			$pj_token = $this->token();
-			$
+			$pj_member = "";
+			$time = date('Y-m-d H-i-s');
+			$th_key = time();
+			$sj_object = json_decode($option[2], true);
+			$sql = "INSERT INTO `project`(`project_token`, `project_title`, `project_content`, `project_member`, `created_time`) 
+								  VALUES ('$pj_token'    , '$pj_title'    , '$pj_content'    , '$pj_member'    , '$time')";
+			$query = $conn->query($sql);
+			if($query){
+				for ($i=1; $i <= count($sj_object); $i++) { 
+					$sj_title = $sj_object[$i]['pjt_name'];
+					$sj_content = $sj_object[$i]['pjt_dec'];
+					$sql = "INSERT INTO `subject`(`project_token`, `theme_key`, `subject_title`, `subject_content`, `subject_enable`, `created_time`) 
+										  VALUES ('$pj_token'    , '$th_key'  , '$sj_title'    , '$sj_content'    , 'true'          , '$time')";
+					$query = $conn->query($sql);
+				}
+				if($query){
+					return true;
+				}else{
+					return $conn->error;
+				}
+			}else{
+				return $conn->error;
+			}
+		}
+
+		function getproject_arr(){
+			$conn = $this->__construct();
+			$sql = "SELECT * FROM `project`";
+			$result = $conn->query($sql);
+			$x = 1;
+			$object = [];
+			while($row = mysqli_fetch_assoc($result)){
+				$object[$x] = $row;
+				unset($row);
+				$x++;
+			}
+			return $object;
+		}
+
+		function setprojectmember($access_token, $option){
+			$conn = $this->__construct();
+			$access_token = $option[0];
+			$value = $option[1];
+			$sql = "UPDATE `project` SET `project_member`='$value' WHERE `project_token`='$access_token'";
+			$query = $conn->query($sql);
+			if($query){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		function checkmember($str){
+			if($str){
+
+			}else {
+				return '沒有指派任何會員';
+			}
 		}
 		
 		// 資料庫斷開連接

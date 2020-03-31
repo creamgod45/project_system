@@ -23,12 +23,13 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 		}
 	}elseif(@$_POST['edituser']){
 		$query = $project->edit_member([$_POST['key'],$_POST['name'],$_POST['username'],$_POST['password']]);
+		print_r($query);
 		if($query){
 			echo '<H1>修改成功';
-			header('refresh:1;url="/admin.php"');
+			//header('refresh:1;url="/admin.php"');
 		}else {
-			echo '<H1>修改失敗';
-			header('refresh:1;url="/admin.php"');
+			echo '<H1>修改失敗'.$query;
+			//header('refresh:1;url="/admin.php"');
 		}
 	}elseif(@$_POST['createproject']){
 		$object=[];
@@ -39,9 +40,42 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 			$object[$i]['pjt_name']= $tmp2[0];
 			$object[$i]['pjt_dec']= $tmp2[1];
 		}
-		$json = json_encode($object);
+		$json = json_encode($object, JSON_UNESCAPED_UNICODE);
 		$pj_name = $_POST['pj_name'];
 		$pj_dec = $_POST['pj_dec'];
+		$query = $project->createproject([$pj_name,$pj_dec,$json]);
+		if($query){
+			echo "<h1>建立成功";
+			header('refresh:1;url="/admin.php"');
+		}else{
+			echo "<h1>建立失敗";
+			header('refresh:1;url="/admin.php"');
+		}
+	}elseif(@$_POST['editprojectmember']){
+		$string = "";
+		$leader = $_POST['leader'];
+		$tmp_member = [];
+		$x=1;
+		foreach($_POST as $key => $value){
+			if($value==="member" && $key != $leader){
+				$tmp_member[$x] = $key;
+				$x++;
+			}
+		}
+		$leader = $project->findmember('access_token',$leader);
+		$string .= "/".$leader['name'].":1";
+		foreach($tmp_member as $key => $value){
+			$tmp = $project->findmember('access_token', $value);
+			$string .= "/".$tmp['name'].":0";
+		}
+		$query = $project->setprojectmember($_POST['token'],$string);
+		if($query){
+			echo "<h1>指派成功";
+			header('refresh:1;url="/admin.php"');
+		}else{
+			echo "<h1>指派失敗";
+			header('refresh:1;url="/admin.php"');
+		}
 	}else{
 		echo '
 			<html>
@@ -71,7 +105,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 					<li><a href="javascript:void(0)">專案管理</a>
 						<ul>
 							<li><a id="cp" href="javascript:void(0)">新增</a></li>
-							<li><a href="javascript:void(0)">指定專案成員</a></li>
+							<li><a id="epm" href="javascript:void(0)">指定專案成員</a></li>
 							<li><a href="javascript:void(0)">修改專案成員</a></li>
 							<li><a href="javascript:void(0)">修改專案</a></li>
 							<li><a href="javascript:void(0)">刪除專案</a></li>
@@ -91,7 +125,6 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 							<li>用戶ID：'.$member_list[$i]['id'].'</li>
 							<li>用戶姓名：'.$member_list[$i]['name'].'</li>
 							<li>用戶帳號：'.$member_list[$i]['username'].'</li>
-							<li>用戶密碼：'.$member_list[$i]['password'].'</li>
 						</ul>
 					';
 				}
@@ -166,6 +199,45 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 						<input type="hidden" name="pjt_array" id="pjt_array">
 						<input class="input btn" name="createproject" type="submit" value="新增專案">
 					</form>
+				</div>
+
+				<!-- edit project member -->
+				<div id="epms_bg" style="display:none;" class="dialog_bg"></div>
+				<div id="epms" style="display:none;" class="dialog">
+					<div class="dialog_main" style="overflow:auto;height:280px;">
+						<div style="float:right;" id="close_epms">&times;</div>';
+						$prject_list = $project->getproject_arr();
+						for($i=1;$i<=count($prject_list);$i++){
+							echo '
+							<form action="" method="POST">
+								<details>
+									<summary>專案名稱：'.$prject_list[$i]['project_title'].'</summary>
+									<div>成員：'.$project->checkmember($prject_list[$i]['project_member']).'</div>
+									<table width="100%" style="height:100px;overflow:auto;">
+										<tr>
+											<th>使用者名稱<th>
+											<th>指派組長<th>
+											<th>指派組員<th>
+										</tr>';
+									for($y=1;$y<=count($member_list);$y++){
+										echo '
+										<tr>
+											<th>'.$member_list[$y]['name'].'<th>
+											<th><input type="radio" class="leader_'.$i.'" name="leader" value="'.$member_list[$y]['access_token'].'"><th>
+											<th><input type="checkbox" name="'.$member_list[$y]['access_token'].'" value="member"></th>
+										</tr>
+										';
+									}
+									echo '
+									</table>
+									<th><input type="hidden" name="token" value="'.$prject_list[$i]['project_token'].'"></th>
+									<input name="editprojectmember" type="submit" value="指派專案成員">
+								</details>
+							</form>
+							';
+						}
+						echo '
+					</div>
 				</div>
 
 			</body>
