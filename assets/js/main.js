@@ -40,7 +40,7 @@ $(function(){
 	});
 
 
-	// 編輯專案成員
+	// 指派專案成員
 	$('#epm').click(()=>{
 		$('#epms').show();
 		$('#epms_bg').show();
@@ -50,8 +50,24 @@ $(function(){
 		$('#epms_bg').hide();
 	});
 
-	$('.ui-menu-item-wrapper').click(()=>{
+	// 修改專案成員
+	$('#apm').click(()=>{
+		$('#apms').show();
+		$('#apms_bg').show();
+	});
+	$('#close_apms').click(()=>{
+		$('#apms').hide();
+		$('#apms_bg').hide();
+	});
 
+	// 修修改專案
+	$('#ep').click(()=>{
+		$('#eps').show();
+		$('#eps_bg').show();
+	});
+	$('#close_eps').click(()=>{
+		$('#eps').hide();
+		$('#eps_bg').hide();
 	});
 
 });
@@ -60,7 +76,7 @@ $(function(){
 var flag_pjt = 2;
 function add_pjt(){
 	if(flag_pjt <= 10){
-		$("#pjt_box").append("<div><label>面相"+flag_pjt+"標題：</label><input class=\"input\" type=\"text\" id=\"pjt_name_"+flag_pjt+"\"></div><div><label>面相"+flag_pjt+"說明：</label><input class=\"input\" type=\"text\" id=\"pjt_dec_"+flag_pjt+"\"></div>");
+		$("#pjt_box").append("<div><label>面相標題：</label><input class=\"input\" type=\"text\" id=\"pjt_name_"+flag_pjt+"\"></div><div><label>面相說明：</label><input class=\"input\" type=\"text\" id=\"pjt_dec_"+flag_pjt+"\"></div>");
 		flag_pjt++;
 	}
 }

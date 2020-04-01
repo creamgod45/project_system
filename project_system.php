@@ -14,7 +14,7 @@
 		
 		// 資料庫連接
 		function __construct(){
-			$mysqli = mysqli_connect("localhost","admin","1234","project_system");
+			$mysqli = mysqli_connect("localhost","root","","project_system");
 			if($mysqli->connect_error){
 				die("mysql error:".$mysqli->connect_error);
 				exit;
@@ -165,15 +165,15 @@
 			$pj_token = $this->token();
 			$pj_member = "";
 			$time = date('Y-m-d H-i-s');
-			$th_key = time();
 			$sj_object = json_decode($option[2], true);
 			$sql = "INSERT INTO `project`(`project_token`, `project_title`, `project_content`, `project_member`, `created_time`) 
-								  VALUES ('$pj_token'    , '$pj_title'    , '$pj_content'    , '$pj_member'    , '$time')";
+								  VALUES ('$pj_token'    , '$pj_title'    , '$pj_content'    , ''    , '$time')";
 			$query = $conn->query($sql);
 			if($query){
 				for ($i=1; $i <= count($sj_object); $i++) { 
 					$sj_title = $sj_object[$i]['pjt_name'];
 					$sj_content = $sj_object[$i]['pjt_dec'];
+					$th_key = time()+$i;
 					$sql = "INSERT INTO `subject`(`project_token`, `theme_key`, `subject_title`, `subject_content`, `subject_enable`, `created_time`) 
 										  VALUES ('$pj_token'    , '$th_key'  , '$sj_title'    , '$sj_content'    , 'true'          , '$time')";
 					$query = $conn->query($sql);
@@ -204,8 +204,7 @@
 
 		function setprojectmember($access_token, $option){
 			$conn = $this->__construct();
-			$access_token = $option[0];
-			$value = $option[1];
+			$value = $option;
 			$sql = "UPDATE `project` SET `project_member`='$value' WHERE `project_token`='$access_token'";
 			$query = $conn->query($sql);
 			if($query){
@@ -214,15 +213,56 @@
 				return false;
 			}
 		}
-
-		function checkmember($str){
-			if($str){
-
-			}else {
-				return '沒有指派任何會員';
+		function role_check($value){
+			if($value==1){
+				return '組長';
+			}else{
+				return '組員';
 			}
 		}
-		
+
+		function checkmember($str){
+			if($str==""){
+				return '沒有指派任何組員';
+			} else {
+				$string = "<ul style='margin:0;list-style: cjk-ideographic;'>";
+				$tmp=[];
+				$row = explode('/',$str);
+				for($i=1;$i<=count($row)-1;$i++){
+					$tmp[$i] = explode(':',$row[$i]);
+					$string .= '<li>'.$tmp[$i][0]."&nbsp;".$this->role_check($tmp[$i][1])."</li>";
+				}
+				return $string."</ul>";
+			}
+		}
+
+		function checkmembers($str,$token){
+			if($str==""){
+				return '沒有指派任何組員';
+			} else {
+				$string = "<ul style='margin:0;list-style: cjk-ideographic;'>";
+				$tmp=[];
+				$row = explode('/',$str);
+				for($i=1;$i<=count($row)-1;$i++){
+					$tmp[$i] = explode(':',$row[$i]);
+					$string .= '<li><form style="display:inline;" action="" method="POST">'.$tmp[$i][0]."&nbsp;".$this->role_check($tmp[$i][1])."<input type=\"hidden\" name='name' value='".$tmp[$i][0]."'><input type=\"hidden\" name='token' value='$token'><input type='hidden' name='member' value='$str'><input type='submit' name='aprojectmember' value='刪除成員'></form></li>";
+				}
+				return $string."</ul>";
+			}
+		}
+
+		function getsubject($token){
+			$conn = $this->__construct();
+			$sql = "SELECT * FROM `subject` WHERE `project_token`='$token'";
+			$result = $conn->query($sql);
+			$object = [];
+			$x=1;
+			while($row =mysqli_fetch_assoc($result)){
+				$object[$x]=$row;
+				$x++;
+			}
+			return $object;
+		}
 		// 資料庫斷開連接
 		function __destruct(){
 			$conn = $this->__construct();

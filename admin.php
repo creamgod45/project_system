@@ -76,6 +76,31 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 			echo "<h1>指派失敗";
 			header('refresh:1;url="/admin.php"');
 		}
+	}elseif(@$_POST['aprojectmember']){
+		$name = $_POST['name'];
+		$token = $_POST['token'];
+		$member = $_POST['member'];
+		$string ="";
+		$tmp=[];
+		$row = explode('/',$member);
+		for($i=1;$i<=count($row)-1;$i++){
+			$tmp[$i] = explode(':',$row[$i]);
+			if($tmp[$i][0]===$name){
+				unset($tmp[$i]);
+			}else{
+				$string .="/".$tmp[$i][0].":".$tmp[$i][1];
+			}
+		}
+		$query = $project->setprojectmember($token,$string);
+		if($query){
+			echo "<h1>刪除成功";
+			header('refresh:1;url="/admin.php"');
+		}else{
+			echo "<h1>刪除失敗";
+			header('refresh:1;url="/admin.php"');
+		}
+	}elseif(@$_POST['editproject']){
+		var_dump($_POST);
 	}else{
 		echo '
 			<html>
@@ -95,7 +120,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 				<ul class="down-menu">
 					<li><a href="javascript:void(0)">後台管理</a></li>
 					<li><a href="javascript:void(0)">使用者管理</a>
-						<ul>
+						<ul style="margin:0;padding:0;list-style:none;">
 							<li><a id="create_user" href="javascript:void(0)">新增</a></li>
 							<li><a id="edit_user" href="javascript:void(0)">修改</a></li>
 							<li><a id="delete_user" href="javascript:void(0)">刪除</a></li>
@@ -103,11 +128,11 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 						</ul>
 					</li>
 					<li><a href="javascript:void(0)">專案管理</a>
-						<ul>
+						<ul style="margin:0;padding:0;list-style:none;">
 							<li><a id="cp" href="javascript:void(0)">新增</a></li>
 							<li><a id="epm" href="javascript:void(0)">指定專案成員</a></li>
-							<li><a href="javascript:void(0)">修改專案成員</a></li>
-							<li><a href="javascript:void(0)">修改專案</a></li>
+							<li><a id="apm" href="javascript:void(0)">修改專案成員</a></li>
+							<li><a id="ep" href="javascript:void(0)">修改專案</a></li>
 							<li><a href="javascript:void(0)">刪除專案</a></li>
 							<li><a href="javascript:void(0)">檢視專案</a></li>
 						</ul>
@@ -121,7 +146,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 				echo '<div id="user_panel">';
 				for($i=1;$i<=count($member_list);$i++){
 					echo '
-						<ul class="user_card">
+						<ul class="user_card" style="list-style:none;">
 							<li>用戶ID：'.$member_list[$i]['id'].'</li>
 							<li>用戶姓名：'.$member_list[$i]['name'].'</li>
 							<li>用戶帳號：'.$member_list[$i]['username'].'</li>
@@ -167,7 +192,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 				<!-- edit user -->
 				<div id="edit_users_bg" style="display:none;" class="dialog_bg"></div>
 				<div id="edit_users" style="display:none;" class="dialog">
-					<form action="" method="POST" class="dialog_main" style="overflow:auto;height:280px;">
+					<form action="" method="POST" class="dialog_main" style="overflow:auto;height:280px;width:30vw;height:70vh;">
 						<div style="float:right;" id="close_edit_users">&times;</div>';
 						for($i=1;$i<=count($member_list);$i++){
 							echo '
@@ -188,12 +213,12 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 				<!-- create project -->
 				<div id="cps_bg" style="display:none;" class="dialog_bg"></div>
 				<div id="cps" style="display:none;" class="dialog">
-					<form action="" method="POST" class="dialog_main" onsubmit="return pjt_load();" style="overflow:auto;height:280px;">
+					<form action="" method="POST" class="dialog_main" onsubmit="return pjt_load();" style="overflow:auto;height:280px;width:35vw;height:70vh;">
 						<div style="float:right;" id="close_cps">&times;</div>
 						<div><label>專案名稱：</label><input class="input" type="text" name="pj_name" required /></div>
 						<div><label>專案說明：</label><input class="input" type="text" name="pj_dec" required /></div>
-						<div><label>面相1標題：</label><input class="input" type="text" id="pjt_name_1"></div>
-						<div><label>面相1說明：</label><input class="input" type="text" id="pjt_dec_1"></div>
+						<div><label>面相標題：</label><input class="input" type="text" id="pjt_name_1"></div>
+						<div><label>面相說明：</label><input class="input" type="text" id="pjt_dec_1"></div>
 						<div id="pjt_box"></div>
 						<div><a href="javascript:void(0)" onclick="add_pjt()">新增面相</a></div>
 						<input type="hidden" name="pjt_array" id="pjt_array">
@@ -204,7 +229,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 				<!-- edit project member -->
 				<div id="epms_bg" style="display:none;" class="dialog_bg"></div>
 				<div id="epms" style="display:none;" class="dialog">
-					<div class="dialog_main" style="overflow:auto;height:280px;">
+					<div class="dialog_main" style="overflow:auto;height:280px;width:50vw;height:50vh;">
 						<div style="float:right;" id="close_epms">&times;</div>';
 						$prject_list = $project->getproject_arr();
 						for($i=1;$i<=count($prject_list);$i++){
@@ -213,7 +238,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 								<details>
 									<summary>專案名稱：'.$prject_list[$i]['project_title'].'</summary>
 									<div>成員：'.$project->checkmember($prject_list[$i]['project_member']).'</div>
-									<table width="100%" style="height:100px;overflow:auto;">
+									<table width="100%" style="height:100px;overflow:auto;border:solid black 2px;padding:8px;">
 										<tr>
 											<th>使用者名稱<th>
 											<th>指派組長<th>
@@ -237,6 +262,104 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 							';
 						}
 						echo '
+					</div>
+				</div>
+
+				<!-- a project member -->
+				<div id="apms_bg" style="display:none;" class="dialog_bg"></div>
+				<div id="apms" style="display:none;" class="dialog">
+					<div class="dialog_main" style="overflow:auto;height:280px;width:50vw;height:50vh;">
+						<div style="float:right;" id="close_apms">&times;</div>';
+						$prject_list = $project->getproject_arr();
+						for($i=1;$i<=count($prject_list);$i++){
+							echo '
+							<form action="" method="POST">
+								<details>
+									<summary>專案名稱：'.$prject_list[$i]['project_title'].'</summary>
+									<div>成員：'.$project->checkmembers($prject_list[$i]['project_member'],$prject_list[$i]['project_token']).'</div>
+									<table width="100%" style="height:100px;overflow:auto;border:solid black 2px;padding:8px;">
+										<tr>
+											<th>使用者名稱<th>
+											<th>指派組長<th>
+											<th>指派組員<th>
+										</tr>';
+									for($y=1;$y<=count($member_list);$y++){
+										echo '
+										<tr>
+											<th>'.$member_list[$y]['name'].'<th>
+											<th><input type="radio" class="leader_'.$i.'" name="leader" value="'.$member_list[$y]['access_token'].'"><th>
+											<th><input type="checkbox" name="'.$member_list[$y]['access_token'].'" value="member"></th>
+										</tr>
+										';
+									}
+									echo '
+									</table>
+									<th><input type="hidden" name="token" value="'.$prject_list[$i]['project_token'].'"></th>
+									<input name="editprojectmember" type="submit" value="修改專案成員">
+								</details>
+							</form>
+							';
+						}
+						echo '
+					</div>
+				</div>
+
+				<!-- edit project -->
+				<div id="eps_bg" style="display:none;" class="dialog_bg"></div>
+				<div id="eps" style="display:none;" class="dialog">
+					<div class="dialog_main" style="overflow:auto;height:280px;width:90vw;height:90vh;">
+						<div style="float:right;" id="close_eps">&times;</div>';
+						$prject_list = $project->getproject_arr();
+						for($i=1;$i<=count($prject_list);$i++){
+							$subject_list = $project->getsubject($prject_list[$i]['project_token']);
+							$subject_num = count($subject_list)+1;
+							echo '
+							<form action="" method="POST" onsubmit="return pjt_load'.$i.'();">
+								<div><label>專案名稱：</label><input class="input" type="text" value="'.$prject_list[$i]['project_title'].'" name="pj_name" required /></div>
+								<div><label>專案說明：</label><input class="input" type="text" value="'.$prject_list[$i]['project_content'].'" name="pj_dec" required /></div>';
+								for($y=1;$y<=$subject_num-1;$y++){
+									echo '
+									<div id="prj_frame'.$y.'" style="border:solid 2px #000; padding:4px;">
+										<div id="prj_deleted'.$y.'" onclick="$(function(){$(\'#prj_frame'.$y.'\').remove();flag_pjt'.$i.'--;})" style="float:right; display:block; text-align:right;">&times;</div>
+										<div><label>面相標題：</label><input class="input" value="'.$subject_list[$y]['subject_title'].'" type="text" id="pjt_name_'.$i.'_'.$y.'" required></div>
+										<div><label>面相說明：</label><input class="input" value="'.$subject_list[$y]['subject_content'].'" type="text" id="pjt_dec_'.$i.'_'.$y.'" required></div>
+									</div>
+									';
+								}
+								echo '
+								<div id="pjt_box'.$i.'"></div>
+								<script>
+								var flag_pjt'.$i.' = '.$subject_num.';
+								function add_pjt'.$i.'(){
+									if(flag_pjt'.$i.' <= 10){
+										$("#pjt_box'.$i.'").append(\'<div id="prj_frame\'+flag_pjt'.$i.'+\'" style="border:solid 2px #000; padding:4px;"><div id="prj_deleted\'+flag_pjt'.$i.'+\'" onclick="';?>del_pjt<?=$i?>(\'#prj_frame\'+(flag_pjt<?=$i?>-1))<?php echo'" style="float:right; display:block; text-align:right;">&times;</div><div><label>面相標題：</label><input class="input" type="text" id="pjt_name_'.$i.'_\'+flag_pjt'.$i.'+\'"></div><div><label>面相說明：</label><input class="input" type="text" id="pjt_dec_'.$i.'_\'+flag_pjt'.$i.'+\'"></div></div>\');
+										flag_pjt'.$i.'++;
+									}
+								}
+								function del_pjt'.$i.'(target){
+									$(target).remove();
+									flag_pjt'.$i.'--;
+								}
+								function pjt_load'.$i.'(){
+									var string1;
+									var string2;
+									var object="";
+									for (let index = 1; index < flag_pjt'.$i.'; index++) {
+										string1 = $(\'#pjt_name_'.$i.'_\'+index.toString()).val();
+										string2 = $(\'#pjt_dec_'.$i.'_\'+index.toString()).val();
+										object = object + "/" + string1 + ":" +string2
+									}
+									$(\'#pjt_array'.$i.'\').attr(\'value\', object);
+									return true;
+								}
+								</script>
+								<div><a href="javascript:void(0)" onclick="add_pjt'.$i.'()">新增面相</a></div>
+								<input type="hidden" name="pjt_array" id="pjt_array'.$i.'">
+								<input class="input btn" name="editproject" type="submit" value="編輯專案">
+							</form>
+							';
+						}
+					echo '
 					</div>
 				</div>
 
