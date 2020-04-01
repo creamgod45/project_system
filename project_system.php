@@ -105,7 +105,7 @@
 			}
 		}
 		
-		function get_member($access_token){
+		function get_member(){
 			$conn = $this->__construct();
 			$sql = "SELECT * FROM `member`";
 			$result = $conn->query($sql);
@@ -173,10 +173,46 @@
 				for ($i=1; $i <= count($sj_object); $i++) { 
 					$sj_title = $sj_object[$i]['pjt_name'];
 					$sj_content = $sj_object[$i]['pjt_dec'];
-					$th_key = time()+$i;
+					$th_key = $i;
 					$sql = "INSERT INTO `subject`(`project_token`, `theme_key`, `subject_title`, `subject_content`, `subject_enable`, `created_time`) 
 										  VALUES ('$pj_token'    , '$th_key'  , '$sj_title'    , '$sj_content'    , 'true'          , '$time')";
 					$query = $conn->query($sql);
+				}
+				if($query){
+					return true;
+				}else{
+					return $conn->error;
+				}
+			}else{
+				return $conn->error;
+			}
+		}
+
+		function setproject($option){
+			$conn = $this->__construct();
+			$pj_token = $option[0];
+			$pj_title = $option[1];
+			$pj_content = $option[2];
+			$sj_object = json_decode($option[3], true);
+			$sql = "UPDATE `project` SET `project_title`='$pj_title',`project_content`='$pj_content' WHERE `project_token`='$pj_token'";
+			$query = $conn->query($sql);
+			if($query){				
+				$sql = "SELECT * FROM `subject` WHERE `project_token`='$pj_token'";
+				$result = $conn->query($sql);
+				$x = 1;
+				$object = [];
+				while($row = mysqli_fetch_assoc($result)){
+					$object[$x] = $row;
+					unset($row);
+					$x++;
+				}
+				$subject_list = $object;
+				$subject_num = count($subject_list);
+				unset($x); unset($object);
+				for ($i=1; $i <= count($sj_object); $i++) { 
+					$sj_title = $sj_object[$i]['pjt_name'];
+					$sj_content = $sj_object[$i]['pjt_dec'];
+					$th_key = $i;
 				}
 				if($query){
 					return true;
@@ -253,7 +289,7 @@
 
 		function getsubject($token){
 			$conn = $this->__construct();
-			$sql = "SELECT * FROM `subject` WHERE `project_token`='$token'";
+			$sql = "SELECT * FROM `subject` WHERE `project_token`='$token' ORDER BY `subject`.`theme_key` ASC";
 			$result = $conn->query($sql);
 			$object = [];
 			$x=1;

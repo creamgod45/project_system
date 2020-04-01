@@ -93,12 +93,3 @@ function pjt_load(){
 	$('#pjt_array').attr('value', object);
 	return true;
 }
-
-function leader_locker(_object, name){
-	$('.'+name).attr('disabled',true);
-	$(_object).attr('disabled',false);
-}
-
-function leader_unlocker(name){
-	$('.'+name).attr('disabled',false);
-}

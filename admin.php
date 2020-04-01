@@ -101,6 +101,19 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 		}
 	}elseif(@$_POST['editproject']){
 		var_dump($_POST);
+		$pj_name = $_POST['pj_name'];
+		$pj_dec = $_POST['pj_dec'];
+		$pj_token = $_POST['token'];
+		$object=[];
+		$tmp1 = explode('/',$_POST['pjt_array']);
+		unset($tmp1[0]);
+		for ($i=1; $i <= count($tmp1); $i++) { 
+			$tmp2 = explode(':',$tmp1[$i]);
+			$object[$i]['pjt_name']= $tmp2[0];
+			$object[$i]['pjt_dec']= $tmp2[1];
+		}
+		$json = json_encode($object, JSON_UNESCAPED_UNICODE);
+		echo $json;
 	}else{
 		echo '
 			<html>
@@ -142,7 +155,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 				</nav>
 				<main class="nav_space"><ul>';
 				// user
-				$member_list = $project->get_member("513f42e9bf55ae62a69173c9b609ae18");
+				$member_list = $project->get_member();
 				echo '<div id="user_panel">';
 				for($i=1;$i<=count($member_list);$i++){
 					echo '
@@ -354,6 +367,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 								}
 								</script>
 								<div><a href="javascript:void(0)" onclick="add_pjt'.$i.'()">新增面相</a></div>
+								<input type="hidden" name="token" value="'.$prject_list[$i]['project_token'].'">
 								<input type="hidden" name="pjt_array" id="pjt_array'.$i.'">
 								<input class="input btn" name="editproject" type="submit" value="編輯專案">
 							</form>
