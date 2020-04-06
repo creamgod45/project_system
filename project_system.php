@@ -193,32 +193,29 @@
 			$pj_token = $option[0];
 			$pj_title = $option[1];
 			$pj_content = $option[2];
-			$sj_object = json_decode($option[3], true);
+			$sj_object = $option[3];
+			$time = date('Y-m-d H-i-s');
 			$sql = "UPDATE `project` SET `project_title`='$pj_title',`project_content`='$pj_content' WHERE `project_token`='$pj_token'";
 			$query = $conn->query($sql);
+			var_dump($sj_object);
 			if($query){				
 				$sql = "SELECT * FROM `subject` WHERE `project_token`='$pj_token'";
 				$result = $conn->query($sql);
-				$x = 1;
-				$object = [];
-				while($row = mysqli_fetch_assoc($result)){
-					$object[$x] = $row;
-					unset($row);
-					$x++;
+				$subject_num = mysqli_num_rows($result);
+				$query = [];
+				for ($i=1; $i <= 10; $i++) {
+					$sql = "DELETE FROM `subject` WHERE `theme_key` = '$i' AND `project_token` = '$pj_token'";
+					$conn->query($sql);
 				}
-				$subject_list = $object;
-				$subject_num = count($subject_list);
-				unset($x); unset($object);
 				for ($i=1; $i <= count($sj_object); $i++) { 
 					$sj_title = $sj_object[$i]['pjt_name'];
 					$sj_content = $sj_object[$i]['pjt_dec'];
-					$th_key = $i;
+					$sql = "INSERT INTO `subject`(`project_token`, `theme_key`, `subject_title`, `subject_content`, `subject_enable`, `created_time`) 
+										  VALUES ('$pj_token'    , '$i'       , '$sj_title'    , '$sj_content'    , 'true'          , '$time')"; 
+					$query = $conn->query($sql);
+					echo $query;
 				}
-				if($query){
-					return true;
-				}else{
-					return $conn->error;
-				}
+				return true;
 			}else{
 				return $conn->error;
 			}

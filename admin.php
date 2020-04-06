@@ -100,7 +100,6 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 			header('refresh:1;url="/admin.php"');
 		}
 	}elseif(@$_POST['editproject']){
-		var_dump($_POST);
 		$pj_name = $_POST['pj_name'];
 		$pj_dec = $_POST['pj_dec'];
 		$pj_token = $_POST['token'];
@@ -112,8 +111,14 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 			$object[$i]['pjt_name']= $tmp2[0];
 			$object[$i]['pjt_dec']= $tmp2[1];
 		}
-		$json = json_encode($object, JSON_UNESCAPED_UNICODE);
-		echo $json;
+		$query = $project->setproject([$pj_token,$pj_name,$pj_dec,$object]);
+		if($query){
+			echo "<h1>修改成功";
+			//header('refresh:1;url="/admin.php"');
+		}else{
+			echo "<h1>修改失敗";
+			//header('refresh:1;url="/admin.php"');
+		}
 	}else{
 		echo '
 			<html>
@@ -360,10 +365,12 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 									for (let index = 1; index < flag_pjt'.$i.'; index++) {
 										string1 = $(\'#pjt_name_'.$i.'_\'+index.toString()).val();
 										string2 = $(\'#pjt_dec_'.$i.'_\'+index.toString()).val();
-										object = object + "/" + string1 + ":" +string2
+										if(string1!= undefined || string2 != undefined){
+											object = object + "/" + string1 + ":" +string2
+										}
 									}
 									$(\'#pjt_array'.$i.'\').attr(\'value\', object);
-									return true;
+									return false;
 								}
 								</script>
 								<div><a href="javascript:void(0)" onclick="add_pjt'.$i.'()">新增面相</a></div>

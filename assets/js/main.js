@@ -88,7 +88,9 @@ function pjt_load(){
 	for (let index = 1; index < flag_pjt; index++) {
 		string1 = $('#pjt_name_'+index.toString()).val();
 		string2 = $('#pjt_dec_'+index.toString()).val();
-		object = object + "/" + string1 + ":" +string2
+		if(string1!= undefined || string2 != undefined){
+			object = object + "/" + string1 + ":" +string2
+		}
 	}
 	$('#pjt_array').attr('value', object);
 	return true;

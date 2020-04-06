@@ -19,7 +19,7 @@ CREATE TABLE `project_system`.`project` (
 CREATE TABLE `project_system`.`subject` ( 
 `id` INT(255)     NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 `project_token`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`theme_key`       VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
+`theme_key`       INT(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `subject_title`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `subject_content` LONGTEXT CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `subject_enable`  VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
