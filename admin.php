@@ -335,45 +335,28 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 							<form action="" method="POST" onsubmit="return pjt_load'.$i.'();">
 								<div><label>專案名稱：</label><input class="input" type="text" value="'.$prject_list[$i]['project_title'].'" name="pj_name" required /></div>
 								<div><label>專案說明：</label><input class="input" type="text" value="'.$prject_list[$i]['project_content'].'" name="pj_dec" required /></div>';
-								for($y=1;$y<=$subject_num-1;$y++){
+								/* for($y=1;$y<=$subject_num-1;$y++){
 									echo '
 									<div id="prj_frame'.$y.'" style="border:solid 2px #000; padding:4px;">
-										<div id="prj_deleted'.$y.'" onclick="$(function(){$(\'#prj_frame'.$y.'\').remove();flag_pjt'.$i.'--;})" style="float:right; display:block; text-align:right;">&times;</div>
-										<div><label>面相標題：</label><input class="input" value="'.$subject_list[$y]['subject_title'].'" type="text" id="pjt_name_'.$i.'_'.$y.'" required></div>
-										<div><label>面相說明：</label><input class="input" value="'.$subject_list[$y]['subject_content'].'" type="text" id="pjt_dec_'.$i.'_'.$y.'" required></div>
+										<div onclick="subject_remove(\''.$prject_list[$i]['project_token'].'\',\'#prj_frame'.$y.'\', '.$y.')" style="float:right; display:block; text-align:right;">&times;</div>
+										<div><label>面相標題：</label><input class="input" value="'.$subject_list[$y]['subject_title'].'" type="text" id="pjt_name_'.$prject_list[$i]['project_token'].'_'.$y.'" required></div>
+										<div><label>面相說明：</label><input class="input" value="'.$subject_list[$y]['subject_content'].'" type="text" id="pjt_dec_'.$prject_list[$i]['project_token'].'_'.$y.'" required></div>
 									</div>
 									';
+								} */
+								echo '
+								<div id="pjt_box'.$prject_list[$i]['project_token'].'"></div>
+								<script>
+								var _layer = "'.$prject_list[$i]['project_token'].'";       // 儲存位置
+								object[_layer] = [];                                        // 儲存位置初始化';
+								for($y=1;$y<=$subject_num-1;$y++){
+									echo '
+									php_subject_load(_layer, {'.$y.':["'.$subject_list[$y]['subject_title'].'","'.$subject_list[$y]['subject_content'].'"]});';
 								}
 								echo '
-								<div id="pjt_box'.$i.'"></div>
-								<script>
-								var flag_pjt'.$i.' = '.$subject_num.';
-								function add_pjt'.$i.'(){
-									if(flag_pjt'.$i.' <= 10){
-										$("#pjt_box'.$i.'").append(\'<div id="prj_frame\'+flag_pjt'.$i.'+\'" style="border:solid 2px #000; padding:4px;"><div id="prj_deleted\'+flag_pjt'.$i.'+\'" onclick="';?>del_pjt<?=$i?>(\'#prj_frame\'+(flag_pjt<?=$i?>-1))<?php echo'" style="float:right; display:block; text-align:right;">&times;</div><div><label>面相標題：</label><input class="input" type="text" id="pjt_name_'.$i.'_\'+flag_pjt'.$i.'+\'"></div><div><label>面相說明：</label><input class="input" type="text" id="pjt_dec_'.$i.'_\'+flag_pjt'.$i.'+\'"></div></div>\');
-										flag_pjt'.$i.'++;
-									}
-								}
-								function del_pjt'.$i.'(target){
-									$(target).remove();
-									flag_pjt'.$i.'--;
-								}
-								function pjt_load'.$i.'(){
-									var string1;
-									var string2;
-									var object="";
-									for (let index = 1; index < flag_pjt'.$i.'; index++) {
-										string1 = $(\'#pjt_name_'.$i.'_\'+index.toString()).val();
-										string2 = $(\'#pjt_dec_'.$i.'_\'+index.toString()).val();
-										if(string1!= undefined || string2 != undefined){
-											object = object + "/" + string1 + ":" +string2
-										}
-									}
-									$(\'#pjt_array'.$i.'\').attr(\'value\', object);
-									return false;
-								}
+								gen_subject(_layer);
 								</script>
-								<div><a href="javascript:void(0)" onclick="add_pjt'.$i.'()">新增面相</a></div>
+								<div><a href="javascript:void(0)" onclick="subject_add(\''.$prject_list[$i]['project_token'].'\')">新增面相</a></div>
 								<input type="hidden" name="token" value="'.$prject_list[$i]['project_token'].'">
 								<input type="hidden" name="pjt_array" id="pjt_array'.$i.'">
 								<input class="input btn" name="editproject" type="submit" value="編輯專案">

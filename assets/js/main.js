@@ -95,3 +95,58 @@ function pjt_load(){
 	$('#pjt_array').attr('value', object);
 	return true;
 }
+
+var object = [];     // 主要儲存容器
+function php_subject_load(_layer, _array_val){
+	for(const [key,value] of Object.entries(_array_val)){
+		object[_layer][key] = value;
+	}
+}
+
+function subject_add(_layer){
+	if(object[_layer].length <= 10){
+		object[_layer][object[_layer].length]=["",""];
+		$("#pjt_box" + _layer.toString()).html("");
+		gen_subject(_layer);
+	}
+}
+
+function gen_subject(_layer){
+	var tmp_1="";
+	var tmp_2="";
+	var x = 1;
+	for(var i=1;i<=10;i++){
+		if(object[_layer][i] != undefined){
+			for(const [key,value] of Object.entries(object[_layer][i])){
+				if(key==0){
+					tmp_1=value;
+				}else if(key==1){
+					tmp_2 = value;
+					$("#pjt_box" + _layer.toString()).append('<div id="prj_frame'+_layer.toString()+'" style="border:solid 2px #000; padding:4px;"><div onclick="subject_remove(\''+_layer.toString()+'\',\'#prj_frame'+_layer.toString()+'\', '+i+')" style="float:right; display:block; text-align:right;">&times;</div><div><label>面相標題：</label><input class="input" value="'+tmp_1+'" type="text" id="pjt_name_'+_layer+'_'+i+'" required></div><div><label>面相說明：</label><input class="input" value="'+tmp_2+'" type="text" id="pjt_dec_'+_layer+'_'+i+'" required></div></div>');
+				}
+			}
+		}
+	}
+}
+
+function subject_remove(_layer, _target, _key){
+	$(_target).remove();
+	object[_layer].splice(_key, 1);
+	$("#pjt_box" + _layer.toString()).empty();
+	gen_subject(_layer);
+}
+
+function subject_load(_layer){
+	var string1;
+	var string2;
+	var object="";
+	for (let index = 1; index < flag_pjt; index++) {
+		string1 = $('#pjt_name_'+index.toString()).val();
+		string2 = $('#pjt_dec_'+index.toString()).val();
+		if(string1!= undefined || string2 != undefined){
+			object = object + "/" + string1 + ":" +string2
+		}
+	}
+	$('#pjt_array').attr('value', object);
+	return false;
+}
