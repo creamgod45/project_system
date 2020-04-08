@@ -60,7 +60,7 @@ $(function(){
 		$('#apms_bg').hide();
 	});
 
-	// 修修改專案
+	// 修改專案
 	$('#ep').click(()=>{
 		$('#eps').show();
 		$('#eps_bg').show();
@@ -68,6 +68,16 @@ $(function(){
 	$('#close_eps').click(()=>{
 		$('#eps').hide();
 		$('#eps_bg').hide();
+	});
+
+	// 刪除專案
+	$('#dp').click(()=>{
+		$('#dps').show();
+		$('#dps_bg').show();
+	});
+	$('#close_dps').click(()=>{
+		$('#dps').hide();
+		$('#dps_bg').hide();
 	});
 
 });
@@ -99,7 +109,9 @@ function pjt_load(){
 var object = [];     // 主要儲存容器
 function php_subject_load(_layer, _array_val){
 	for(const [key,value] of Object.entries(_array_val)){
-		object[_layer][key] = value;
+		if(key != undefined && value != undefined){
+			object[_layer][key] = value;
+		}
 	}
 }
 
@@ -132,6 +144,27 @@ function gen_subject(_layer){
 function subject_remove(_layer, _target, _key){
 	$(_target).remove();
 	object[_layer].splice(_key, 1);
+	var string1 = [];
+	var string2 = [];
+	for (let index = 1; index <= 10; index++) {
+		if(index != _key){
+			string1[index] = $('#pjt_name_'+_layer.toString()+'_'+index).val();
+			string2[index] = $('#pjt_dec_'+_layer.toString()+'_'+index).val();
+			if(string1[index] != undefined && string2[index] != undefined){
+				delete object[_layer][_key];
+			}
+		}
+	}
+	if(string1[1] != undefined && string2[1] != undefined){php_subject_load(_layer , {1:[string1[1],string2[1]]});}
+	if(string1[2] != undefined && string2[2] != undefined){php_subject_load(_layer , {2:[string1[2],string2[2]]});}
+	if(string1[3] != undefined && string2[3] != undefined){php_subject_load(_layer , {3:[string1[3],string2[3]]});}
+	if(string1[4] != undefined && string2[4] != undefined){php_subject_load(_layer , {4:[string1[4],string2[4]]});}
+	if(string1[5] != undefined && string2[5] != undefined){php_subject_load(_layer , {5:[string1[5],string2[5]]});}
+	if(string1[6] != undefined && string2[6] != undefined){php_subject_load(_layer , {6:[string1[6],string2[6]]});}
+	if(string1[7] != undefined && string2[7] != undefined){php_subject_load(_layer , {7:[string1[7],string2[7]]});}
+	if(string1[8] != undefined && string2[8] != undefined){php_subject_load(_layer , {8:[string1[8],string2[8]]});}
+	if(string1[9] != undefined && string2[9] != undefined){php_subject_load(_layer , {9:[string1[9],string2[9]]});}
+	if(string1[10] != undefined && string2[10] != undefined){php_subject_load(_layer , {10:[string1[10],string2[10]]});}
 	$("#pjt_box" + _layer.toString()).empty();
 	gen_subject(_layer);
 }
@@ -140,13 +173,13 @@ function subject_load(_layer){
 	var string1;
 	var string2;
 	var object="";
-	for (let index = 1; index < flag_pjt; index++) {
-		string1 = $('#pjt_name_'+index.toString()).val();
-		string2 = $('#pjt_dec_'+index.toString()).val();
+	for (let index = 1; index <= 10; index++) {
+		string1 = $('#pjt_name_'+_layer.toString()+'_'+index).val();
+		string2 = $('#pjt_dec_'+_layer.toString()+'_'+index).val();
 		if(string1!= undefined || string2 != undefined){
 			object = object + "/" + string1 + ":" +string2
 		}
 	}
-	$('#pjt_array').attr('value', object);
-	return false;
+	$('#pjt_array_'+_layer.toString()).attr('value', object);
+	return true;
 }

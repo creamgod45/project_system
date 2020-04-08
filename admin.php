@@ -114,10 +114,20 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 		$query = $project->setproject([$pj_token,$pj_name,$pj_dec,$object]);
 		if($query){
 			echo "<h1>修改成功";
-			//header('refresh:1;url="/admin.php"');
+			header('refresh:1;url="/admin.php"');
 		}else{
 			echo "<h1>修改失敗";
-			//header('refresh:1;url="/admin.php"');
+			header('refresh:1;url="/admin.php"');
+		}
+	}elseif(@$_POST['deletedproject']){
+		$token = $_POST['token'];
+		$query = $project->deleteproject($token);
+		if($query){
+			echo "<h1>刪除成功";
+			header('refresh:1;url="/admin.php"');
+		}else{
+			echo "<h1>刪除失敗";
+			header('refresh:1;url="/admin.php"');
 		}
 	}else{
 		echo '
@@ -151,7 +161,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 							<li><a id="epm" href="javascript:void(0)">指定專案成員</a></li>
 							<li><a id="apm" href="javascript:void(0)">修改專案成員</a></li>
 							<li><a id="ep" href="javascript:void(0)">修改專案</a></li>
-							<li><a href="javascript:void(0)">刪除專案</a></li>
+							<li><a id="dp" href="javascript:void(0)">刪除專案</a></li>
 							<li><a href="javascript:void(0)">檢視專案</a></li>
 						</ul>
 					</li>
@@ -295,25 +305,6 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 								<details>
 									<summary>專案名稱：'.$prject_list[$i]['project_title'].'</summary>
 									<div>成員：'.$project->checkmembers($prject_list[$i]['project_member'],$prject_list[$i]['project_token']).'</div>
-									<table width="100%" style="height:100px;overflow:auto;border:solid black 2px;padding:8px;">
-										<tr>
-											<th>使用者名稱<th>
-											<th>指派組長<th>
-											<th>指派組員<th>
-										</tr>';
-									for($y=1;$y<=count($member_list);$y++){
-										echo '
-										<tr>
-											<th>'.$member_list[$y]['name'].'<th>
-											<th><input type="radio" class="leader_'.$i.'" name="leader" value="'.$member_list[$y]['access_token'].'"><th>
-											<th><input type="checkbox" name="'.$member_list[$y]['access_token'].'" value="member"></th>
-										</tr>
-										';
-									}
-									echo '
-									</table>
-									<th><input type="hidden" name="token" value="'.$prject_list[$i]['project_token'].'"></th>
-									<input name="editprojectmember" type="submit" value="修改專案成員">
 								</details>
 							</form>
 							';
@@ -332,18 +323,9 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 							$subject_list = $project->getsubject($prject_list[$i]['project_token']);
 							$subject_num = count($subject_list)+1;
 							echo '
-							<form action="" method="POST" onsubmit="return pjt_load'.$i.'();">
+							<form action="" method="POST" onsubmit="return subject_load(\''.$prject_list[$i]['project_token'].'\');">
 								<div><label>專案名稱：</label><input class="input" type="text" value="'.$prject_list[$i]['project_title'].'" name="pj_name" required /></div>
 								<div><label>專案說明：</label><input class="input" type="text" value="'.$prject_list[$i]['project_content'].'" name="pj_dec" required /></div>';
-								/* for($y=1;$y<=$subject_num-1;$y++){
-									echo '
-									<div id="prj_frame'.$y.'" style="border:solid 2px #000; padding:4px;">
-										<div onclick="subject_remove(\''.$prject_list[$i]['project_token'].'\',\'#prj_frame'.$y.'\', '.$y.')" style="float:right; display:block; text-align:right;">&times;</div>
-										<div><label>面相標題：</label><input class="input" value="'.$subject_list[$y]['subject_title'].'" type="text" id="pjt_name_'.$prject_list[$i]['project_token'].'_'.$y.'" required></div>
-										<div><label>面相說明：</label><input class="input" value="'.$subject_list[$y]['subject_content'].'" type="text" id="pjt_dec_'.$prject_list[$i]['project_token'].'_'.$y.'" required></div>
-									</div>
-									';
-								} */
 								echo '
 								<div id="pjt_box'.$prject_list[$i]['project_token'].'"></div>
 								<script>
@@ -358,13 +340,27 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 								</script>
 								<div><a href="javascript:void(0)" onclick="subject_add(\''.$prject_list[$i]['project_token'].'\')">新增面相</a></div>
 								<input type="hidden" name="token" value="'.$prject_list[$i]['project_token'].'">
-								<input type="hidden" name="pjt_array" id="pjt_array'.$i.'">
+								<input type="hidden" name="pjt_array" id="pjt_array_'.$prject_list[$i]['project_token'].'">
 								<input class="input btn" name="editproject" type="submit" value="編輯專案">
 							</form>
 							';
 						}
 					echo '
 					</div>
+				</div>				
+
+				<!-- delete project -->
+				<div id="dps_bg" style="display:none;" class="dialog_bg"></div>
+				<div id="dps" style="display:none;" class="dialog">
+					<form action="" method="POST" class="dialog_main" style="overflow:auto;height:280px;width:35vw;height:70vh;">
+						<div style="float:right;" id="close_dps">&times;</div>';
+						for($i=1;$i<=count($prject_list);$i++){
+							echo '
+								<li>'.$prject_list[$i]['project_title'].'<input type="hidden" name="token" value="'.$prject_list[$i]['project_token'].'"><input type="submit" name="deletedproject" value="刪除專案"></li>
+							';
+						}
+						echo '
+					</form>
 				</div>
 
 			</body>

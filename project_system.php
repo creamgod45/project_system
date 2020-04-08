@@ -197,7 +197,6 @@
 			$time = date('Y-m-d H-i-s');
 			$sql = "UPDATE `project` SET `project_title`='$pj_title',`project_content`='$pj_content' WHERE `project_token`='$pj_token'";
 			$query = $conn->query($sql);
-			var_dump($sj_object);
 			if($query){				
 				$sql = "SELECT * FROM `subject` WHERE `project_token`='$pj_token'";
 				$result = $conn->query($sql);
@@ -220,6 +219,47 @@
 				return $conn->error;
 			}
 		}
+
+		function deleteproject($token){
+			$conn = $this->__construct();
+			$sql = "DELETE FROM `project` WHERE `project_token`='$token'";
+			$query = $conn->query($sql);
+			if($query){
+				$sql = "DELETE FROM `subject` WHERE `project_token` = '$pj_token'";
+				$query = $conn->query($sql);
+				if($query){
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				return false;
+			}
+		}
+		function projectmember($member, $project){
+			$name = $member['name'];
+			$member = $project['project_member'];
+			$object = [];
+			$tmp1 = explode('/',$member);
+			for ($i=1; $i <=count($tmp1)-1; $i++) { 
+				$tmp2 = explode(':',$tmp1[$i]);
+				$r_name = $tmp2[0];
+				$r_leader = $tmp2[1];
+				if($name === $r_name){
+					return [true, $r_leader];
+				}
+			}
+			return [false, 0];
+		}
+		
+		function getproject($token){
+			$conn = $this->__construct();
+			$sql = "SELECT * FROM `project` WHERE `project_token` = '$token'";
+			$result = $conn->query($sql);
+			$row = mysqli_fetch_assoc($result);
+			return $row;
+		}
+		
 
 		function getproject_arr(){
 			$conn = $this->__construct();

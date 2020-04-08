@@ -1,0 +1,20 @@
+關鍵詞
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+stylesheet
+Microsoft JhengHei, Segoe UI;
+
+		function __construct(){
+			$mysqli = mysqli_connect("localhost","root","","project_system");
+			if($mysqli->connect_error){
+				die("mysql error:".$mysqli->connect_error);
+				exit;
+			}
+			@mysqli_set_charset($mysqli, "utf8");
+			return $mysqli;
+		}
+		
+		function __destruct(){
+			$conn = $this->__construct();
+			$conn->close();
+		}
