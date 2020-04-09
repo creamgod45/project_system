@@ -332,6 +332,26 @@
 			return $object;
 		}
 
+		function setsubject($option){
+			$conn = $this->__construct();
+			$th_key = $option[0];
+			$pj_token = $option[1];
+			$item = $this->getsubject($pj_token);
+			$boolean = $item[$th_key]['subject_enable'];
+			switch ($boolean) {
+				case "true":
+					$boolean = "false";
+					break;
+				
+				default:
+					$boolean = "true";
+					break;
+			}
+			$sql = "UPDATE `subject` SET `subject_enable`='$boolean' WHERE `theme_key`='$th_key' AND `project_token` = '$pj_token'";
+			$conn->query($sql);
+			return true;
+		}
+
 		//============================ comment ============================//
 
 		function addcomment($option){

@@ -39,6 +39,8 @@ if(@$project->is_member($_SESSION['member'])){
 			echo "<h1>評價失敗</h1>";
 			header('refresh:1;url="/index.php?page=view_project&token='.$_POST['pj_token'].'"');
 		}
+	}elseif(@$_POST['setcomment']){
+		$project->setsubject([$_POST['th_key'],$_POST['pj_key']]);
 	}else{
 		$pj_list = $project->getproject_arr();
 		echo '
@@ -70,6 +72,11 @@ if(@$project->is_member($_SESSION['member'])){
 							for($i=1;$i<=count($subject_list);$i++){
 								echo '
 									<ul class="prj_item unlist">
+										<form action="" method="POST">
+											<input type="hidden" name="th_key" value="'.$subject_list[$i]['theme_key'].'">
+											<input type="hidden" name="pj_key" value="'.$pj_token.'">
+											<input type="submit" name="setcomment" value="切換意見功能">
+										</form>
 										<li><h3>'.$subject_list[$i]['subject_title'].'</h3></li>
 										<li>'.$subject_list[$i]['subject_content'].'</li>
 										<div class="comment_box">
@@ -220,17 +227,24 @@ if(@$project->is_member($_SESSION['member'])){
 												echo '尚無意見';
 											}
 											echo '
-										</div>
-										<form action="" method="POST" class="comment" enctype="multipart/form-data">
-											<label for="file'.$i.'" id="file_btn'.$i.'" class="file_btn"><img width="24" src="assets/file.png"></label>
-											<input id="file'.$i.'" class="file" type="file" name="file" onchange="fileAsData(this, '.$i.')">
-											<input class="text_box" type="text" name="title" placeholder="標題" required>
-											<input class="text_box" id="text_'.$i.'" type="text" name="comment" placeholder="說明" required>
-											<input type="hidden" id="dataurl'.$i.'" name="file_dataurl">
-											<input type="hidden" name="token" value="'.$subject_list[$i]['project_token'].'">
-											<input type="hidden" name="th_key" value="'.$subject_list[$i]['theme_key'].'">
-											<input class="btn" type="submit" name="submit">
-										</form>
+										</div>';
+										if($subject_list[$i]['subject_enable'] === "true"){
+											echo '
+											<form action="" method="POST" class="comment" enctype="multipart/form-data">
+												<label for="file'.$i.'" id="file_btn'.$i.'" class="file_btn"><img width="24" src="assets/file.png"></label>
+												<input id="file'.$i.'" class="file" type="file" name="file" onchange="fileAsData(this, '.$i.')">
+												<input class="text_box" type="text" name="title" placeholder="標題" required>
+												<input class="text_box" id="text_'.$i.'" type="text" name="comment" placeholder="說明" required>
+												<input type="hidden" id="dataurl'.$i.'" name="file_dataurl">
+												<input type="hidden" name="token" value="'.$subject_list[$i]['project_token'].'">
+												<input type="hidden" name="th_key" value="'.$subject_list[$i]['theme_key'].'">
+												<input class="btn" type="submit" name="submit">
+											</form>
+											';
+										}else{
+											echo '意見功能關閉';
+										}
+										echo '
 									</ul>
 								';
 							}
