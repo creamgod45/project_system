@@ -19,7 +19,7 @@ if(@$project->is_member($_SESSION['member'])){
 			echo '檔案類型：'.$datatype."<br>";
 			if (move_uploaded_file($file["tmp_name"], $target_file)) {
 				echo $target_file. "上傳完成";
-				$query = $project->upload([$_SESSION['member']['access_token'],$datatype,$title.':'.$filename,$th_key,$token]);
+				$query = $project->addcomment([$_SESSION['member']['access_token'],$datatype,$title.':'.$filename.':'.$text,$th_key,$token]);
 			} else {
 				echo "抱歉!!無法上傳檔案";
 			}
@@ -74,7 +74,7 @@ if(@$project->is_member($_SESSION['member'])){
 														<div>標題：'.$tmp[0].'</div>
 														<div>評分：</div>
 														<div>被評價總分：</div>
-														<div>說明：
+														<div>說明：'.$tmp[2].'1
 															<video width="100%" controls>
 															  	<source src="./files/'.$tmp[1].'">
 															</video>
@@ -89,7 +89,7 @@ if(@$project->is_member($_SESSION['member'])){
 														<div>標題：'.$tmp[0].'</div>
 														<div>評分：</div>
 														<div>被評價總分：</div>
-														<div>說明：
+														<div>說明：'.$tmp[2].'
 															<audio controls>
 																  <source src="./files/'.$tmp[1].'">
 															</audio>
@@ -105,7 +105,7 @@ if(@$project->is_member($_SESSION['member'])){
 														<div>標題：'.$tmp[0].'</div>
 														<div>評分：</div>
 														<div>被評價總分：</div>
-														<div>說明：
+														<div>說明：'.$tmp[2].'
 															<img width="100%" src="./files/'.$tmp[1].'">
 														</div>
 													</div>
@@ -130,7 +130,7 @@ if(@$project->is_member($_SESSION['member'])){
 											echo '
 										</div>
 										<form action="" method="POST" class="comment" enctype="multipart/form-data">
-											<label for="file'.$i.'" class="file_btn"><img width="24" src="assets/file.png"></label>
+											<label for="file'.$i.'" id="file_btn'.$i.'" class="file_btn"><img width="24" src="assets/file.png"></label>
 											<input id="file'.$i.'" class="file" type="file" name="file" onchange="fileAsData(this, '.$i.')">
 											<input class="text_box" type="text" name="title" placeholder="標題" required>
 											<input class="text_box" id="text_'.$i.'" type="text" name="comment" placeholder="說明" required>

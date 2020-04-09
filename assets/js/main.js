@@ -193,7 +193,7 @@ function fileAsData (file, key) {
 		res[0] = reader.result.split("/");
 		res[1] = res[0][0].split(":");
 	  	$('#dataurl'+key.toString()).attr('value', res[1][1]);
-	  	$('#text_'+key.toString()).attr('value', "已經選擇檔案");
-	  	$('#text_'+key.toString()).attr('disabled', true);
+	  	$('#file_btn'+key.toString()).attr('style', "background:green;width:354px;display:flex;");
+	  	$('#file_btn'+key.toString()).append("<span style='vertical-align: super;'>已選擇</span>");
 	};
 }

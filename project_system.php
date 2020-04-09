@@ -334,23 +334,6 @@
 
 		//============================ comment ============================//
 
-		function upload($option){
-			$conn = $this->__construct();
-			$access_token = $option[0];
-			$type = $option[1];
-			$data = $option[2];
-			$th_key = $option[3];
-			$token = $option[4]; 
-			$score_key = md5(time());
-			$time = date('Y-m-d H:i:s');
-			$sql1 = "INSERT INTO `comment`(`access_token`, `project_token`, `theme_key`, `score_key`, `comment_type`, `comment_content`, `created_time`)VALUES ('$access_token', '$token', '$th_key' , '$score_key', '$type'      , '$data'          , '$time')";
-			$query = $conn->query($sql1);
-			$sql2= "INSERT INTO `files`(`access_token`, `file_key`, `created_time`) 
-							   VALUES ('$access_token', '$data'  , '$time')";
-			$query = $conn->query($sql2);
-			return true;
-		}
-
 		function addcomment($option){
 			$conn = $this->__construct();
 			$access_token = $option[0];

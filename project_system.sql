@@ -52,13 +52,6 @@ CREATE TABLE `project_system`.`score_index` (
 `created_time`  VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
 ) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_bin;
 
-CREATE TABLE `project_system`.`files` ( 
-`id` INT(255)   NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-`access_token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`file_key`     VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`created_time` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
-) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_bin;
-
 CREATE TABLE `project_system`.`program` ( 
 `id` INT(255)   NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 `access_token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,

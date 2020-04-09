@@ -261,7 +261,7 @@ ul.down-menu li:hover>ul {
     height: auto;
     background-color: #bdbdbd;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 16px;
+    padding: 8px;
     border-radius: 8px;
 }
 .prj_viewer .prj_item .comment{
@@ -300,7 +300,7 @@ ul.down-menu li:hover>ul {
     margin-top: 16px;
     margin-right: 8px;
     border: 1px solid #ccc;
-    display: inline-block;
+    display: inline-table;
     width:26px;
     height:26px;
     cursor: pointer;
@@ -309,7 +309,7 @@ ul.down-menu li:hover>ul {
 }
 
 .prj_viewer .prj_item .comment .file_btn img {
-    margin: 2px;
+    margin: 2px 3.5px;
     width: 20px;
     height: 20px;
 }
