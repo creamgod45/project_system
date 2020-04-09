@@ -1,13 +1,17 @@
 <?php 
-
 require_once "project_system.php";
+//session_destroy();
 $project = new project_system();
 if(@$project->is_member($_SESSION['member'])){
 	if(@$_POST['submit']){
 		@$text = $_POST['comment'];
 		@$datatype = $_POST['file_dataurl'];
 		@$file = $_FILES['file'];
-		if(isset($datatype)){
+		$token = $_POST['token'];
+		$th_key = $_POST['th_key'];
+		$title= $_POST['title'];
+		if(@$datatype != null){
+			// 檔案上傳
 			$subfilename = explode(".", $file['name']);
 			$subfilename = $subfilename[1];
 			$filename = md5(time()).".".$subfilename;
@@ -15,9 +19,13 @@ if(@$project->is_member($_SESSION['member'])){
 			echo '檔案類型：'.$datatype."<br>";
 			if (move_uploaded_file($file["tmp_name"], $target_file)) {
 				echo $target_file. "上傳完成";
+				$query = $project->upload([$_SESSION['member']['access_token'],$datatype,$title.':'.$filename,$th_key,$token]);
 			} else {
-				echo "Sorry, there was an error uploading your file.";
+				echo "抱歉!!無法上傳檔案";
 			}
+		}else{
+			// 留言
+			$project->addcomment([$_SESSION['member']['access_token'],"text",$title.':'.$text,$th_key,$token]);
 		}
 	}else{
 		$pj_list = $project->getproject_arr();
@@ -52,11 +60,83 @@ if(@$project->is_member($_SESSION['member'])){
 									<ul class="prj_item unlist">
 										<li><h3>'.$subject_list[$i]['subject_title'].'</h3></li>
 										<li>'.$subject_list[$i]['subject_content'].'</li>
+										<div class="comment_box">
+											<h3 style="margin:unset;margin-top: 8px;">意見</h3>';
+											$comment_list = $project->getcomment($subject_list[$i]['theme_key'], $pj_token);
+											for ($y=1; $y <= count($comment_list); $y++) {
+												$tmp = $comment_list[$y]['comment_content'];
+												$tmp = explode(':', $tmp);
+												if($comment_list[$y]['comment_type'] === "video"){
+													echo '
+													<div class="view_comment">
+														<div>編號：'.$y.'</div>
+														<div>發表時間：'.$comment_list[$y]['created_time'].'</div>
+														<div>標題：'.$tmp[0].'</div>
+														<div>評分：</div>
+														<div>被評價總分：</div>
+														<div>說明：
+															<video width="100%" controls>
+															  	<source src="./files/'.$tmp[1].'">
+															</video>
+														</div>
+													</div>
+													';
+												}elseif($comment_list[$y]['comment_type'] === "audio"){
+													echo '
+													<div class="view_comment">
+														<div>編號：'.$y.'</div>
+														<div>發表時間：'.$comment_list[$y]['created_time'].'</div>
+														<div>標題：'.$tmp[0].'</div>
+														<div>評分：</div>
+														<div>被評價總分：</div>
+														<div>說明：
+															<audio controls>
+																  <source src="./files/'.$tmp[1].'">
+															</audio>
+														</div>
+													</div>
+													';
+
+												}elseif($comment_list[$y]['comment_type'] === "image"){
+													echo '
+													<div class="view_comment">
+														<div>編號：'.$y.'</div>
+														<div>發表時間：'.$comment_list[$y]['created_time'].'</div>
+														<div>標題：'.$tmp[0].'</div>
+														<div>評分：</div>
+														<div>被評價總分：</div>
+														<div>說明：
+															<img width="100%" src="./files/'.$tmp[1].'">
+														</div>
+													</div>
+													';
+
+												}else{
+													echo '
+													<div class="view_comment">
+														<div>編號：'.$y.'</div>
+														<div>發表時間：'.$comment_list[$y]['created_time'].'</div>
+														<div>標題：'.$tmp[0].'</div>
+														<div>評分：</div>
+														<div>被評價總分：</div>
+														<div>說明：'.$tmp[1].'</div>
+													</div>
+													';
+												}
+											}
+											if(count($comment_list) === 0){
+												echo '尚無意見';
+											}
+											echo '
+										</div>
 										<form action="" method="POST" class="comment" enctype="multipart/form-data">
 											<label for="file'.$i.'" class="file_btn"><img width="24" src="assets/file.png"></label>
 											<input id="file'.$i.'" class="file" type="file" name="file" onchange="fileAsData(this, '.$i.')">
-											<input type="hidden" id="dataurl'.$i.'" name="file_dataurl" value="0">
-											<input class="text_box" id="text_'.$i.'" type="text" name="comment">
+											<input class="text_box" type="text" name="title" placeholder="標題" required>
+											<input class="text_box" id="text_'.$i.'" type="text" name="comment" placeholder="說明" required>
+											<input type="hidden" id="dataurl'.$i.'" name="file_dataurl">
+											<input type="hidden" name="token" value="'.$subject_list[$i]['project_token'].'">
+											<input type="hidden" name="th_key" value="'.$subject_list[$i]['theme_key'].'">
 											<input class="btn" type="submit" name="submit">
 										</form>
 									</ul>
@@ -97,7 +177,6 @@ if(@$project->is_member($_SESSION['member'])){
 			header('refresh:2;url="/"');
 		}
 	}else{
-		var_dump($_SESSION['member']);
 	echo'
 	<html>
 	

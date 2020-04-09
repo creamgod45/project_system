@@ -42,12 +42,7 @@
 			$conn = $this->__construct();
 			$sql = "SELECT * FROM `member` WHERE `username` = '$username' and `password` = '$password'";
 			$result = $conn->query($sql);
-			$row = mysqli_fetch_array($result);
-			foreach($row as $key => $value){
-				if(is_numeric($key)){
-					unset($row[$key]);
-				}
-			}
+			$row = mysqli_fetch_assoc($result);
 			if($username === $row['username'] and $password === $row['password']){
 				return $row;
 			}else{
@@ -339,7 +334,49 @@
 
 		//============================ comment ============================//
 
-		function upload(){}
+		function upload($option){
+			$conn = $this->__construct();
+			$access_token = $option[0];
+			$type = $option[1];
+			$data = $option[2];
+			$th_key = $option[3];
+			$token = $option[4]; 
+			$score_key = md5(time());
+			$time = date('Y-m-d H:i:s');
+			$sql1 = "INSERT INTO `comment`(`access_token`, `project_token`, `theme_key`, `score_key`, `comment_type`, `comment_content`, `created_time`)VALUES ('$access_token', '$token', '$th_key' , '$score_key', '$type'      , '$data'          , '$time')";
+			$query = $conn->query($sql1);
+			$sql2= "INSERT INTO `files`(`access_token`, `file_key`, `created_time`) 
+							   VALUES ('$access_token', '$data'  , '$time')";
+			$query = $conn->query($sql2);
+			return true;
+		}
+
+		function addcomment($option){
+			$conn = $this->__construct();
+			$access_token = $option[0];
+			$type = $option[1];
+			$data = $option[2];
+			$th_key = $option[3];
+			$token = $option[4];
+			$score_key = md5(time());
+			$time = date('Y-m-d H:i:s');
+			$sql1 = "INSERT INTO `comment`(`access_token`, `project_token`, `theme_key`, `score_key`, `comment_type`, `comment_content`, `created_time`)VALUES ('$access_token', '$token', '$th_key' , '$score_key', '$type'      , '$data'          , '$time')";
+			$query = $conn->query($sql1);
+		}
+
+		function getcomment($th_key, $token){
+			$conn = $this->__construct();
+			$sql = "SELECT * FROM `comment` WHERE `theme_key` = '$th_key' AND `project_token` = '$token'";
+			$result = $conn->query($sql);
+			$x = 1;
+			$object=[];
+			while($row=mysqli_fetch_assoc($result)){
+				$object[$x] = $row;
+				unset($row);
+				$x++;
+			}
+			return $object;
+		}
 
 		// 資料庫斷開連接
 		function __destruct(){

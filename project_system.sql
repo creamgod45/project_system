@@ -29,6 +29,7 @@ CREATE TABLE `project_system`.`subject` (
 CREATE TABLE `project_system`.`comment` ( 
 `id` INT(255)      NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 `access_token`    VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
+`project_token`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `theme_key`       VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `score_key`       VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `comment_type`    VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
