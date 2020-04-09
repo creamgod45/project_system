@@ -26,13 +26,13 @@ CREATE TABLE `project_system`.`subject` (
 `created_time`    VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
 ) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_bin;
 
-CREATE TABLE `project_system`.`opinion` ( 
+CREATE TABLE `project_system`.`comment` ( 
 `id` INT(255)      NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 `access_token`    VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `theme_key`       VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `score_key`       VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`opinion_type`    VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
-`opinion_content` LONGTEXT CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
+`comment_type`    VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
+`comment_content` LONGTEXT CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `created_time`    VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
 ) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_bin;
 

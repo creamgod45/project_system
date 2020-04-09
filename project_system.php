@@ -336,6 +336,11 @@
 			}
 			return $object;
 		}
+
+		//============================ comment ============================//
+
+		function upload(){}
+
 		// 資料庫斷開連接
 		function __destruct(){
 			$conn = $this->__construct();

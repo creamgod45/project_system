@@ -183,3 +183,17 @@ function subject_load(_layer){
 	$('#pjt_array_'+_layer.toString()).attr('value', object);
 	return true;
 }
+
+
+function fileAsData (file, key) {
+	var reader = new FileReader();
+	var query = reader.readAsDataURL(file.files[0]);
+	reader.onload = function () {
+		var res = [];
+		res[0] = reader.result.split("/");
+		res[1] = res[0][0].split(":");
+	  	$('#dataurl'+key.toString()).attr('value', res[1][1]);
+	  	$('#text_'+key.toString()).attr('value', "已經選擇檔案");
+	  	$('#text_'+key.toString()).attr('disabled', true);
+	};
+}
