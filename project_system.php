@@ -361,6 +361,52 @@
 			return $object;
 		}
 
+		//============================ score ============================//
+
+		function getscore($score_key){
+			$conn = $this->__construct();
+			$sql = "SELECT * FROM `score` WHERE `score_key` = '$score_key'";
+			$result = $conn->query($sql);
+			$x = 1;
+			$object=[];
+			while($row=mysqli_fetch_assoc($result)){
+				$object[$x] = $row;
+				unset($row);
+				$x++;
+			}
+			$score = 0;
+			$score_list = $object;
+			$score_num = count($object);
+			unset($object);
+			if($score_num){
+				for ($i=1; $i <= $score_num; $i++) { 
+					$score += $score_list[$i]['score'];
+				}
+				$score = $score / $score_num;
+				return '
+				<div>評分：'.$score.'</div>
+				<div>已被評價人數：'.$score_num.'</div>
+				';
+			}else{
+				return '
+				<div>評分：0</div>
+				<div>已被評價人數：0</div>
+				';
+			}
+		}
+
+		function addscore($option){
+			$conn = $this->__construct();
+			$token = $option[0];
+			$key = $option[1];
+			$score = $option[2];
+			$time = date('Y-m-d H:i:s');
+			$sql = "INSERT INTO `score`(`access_token`, `score_key`, `score` , `created_time`) 
+								VALUES ('$token'      , '$key'     , '$score', '$time')";
+			$conn->query($sql);
+			return true;
+		}
+
 		// 資料庫斷開連接
 		function __destruct(){
 			$conn = $this->__construct();

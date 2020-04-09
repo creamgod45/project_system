@@ -27,6 +27,18 @@ if(@$project->is_member($_SESSION['member'])){
 			// 留言
 			$project->addcomment([$_SESSION['member']['access_token'],"text",$title.':'.$text,$th_key,$token]);
 		}
+	}elseif(@$_POST['score_pj']){
+		$score = $_POST['score'];
+		$score_key = $_POST['score_key'];
+		$access_token = $_SESSION['member']['access_token'];
+		$query = $project->addscore([$access_token,$score_key,$score]);
+		if($query){
+			echo "<h1>評價成功</h1>";
+			header('refresh:1;url="/index.php?page=view_project&token='.$_POST['pj_token'].'"');
+		}else{
+			echo "<h1>評價失敗</h1>";
+			header('refresh:1;url="/index.php?page=view_project&token='.$_POST['pj_token'].'"');
+		}
 	}else{
 		$pj_list = $project->getproject_arr();
 		echo '
@@ -71,14 +83,34 @@ if(@$project->is_member($_SESSION['member'])){
 													<div class="view_comment">
 														<div>編號：'.$y.'</div>
 														<div>發表時間：'.$comment_list[$y]['created_time'].'</div>
-														<div>標題：'.$tmp[0].'</div>
-														<div>評分：</div>
-														<div>被評價總分：</div>
-														<div>說明：'.$tmp[2].'1
+														'.$project->getscore($comment_list[$y]['score_key']).'<hr>
+														<div style="font-size:20px;">標題：'.$tmp[0].'</div>
+														<div>說明：'.$tmp[2].'
 															<video width="100%" controls>
 															  	<source src="./files/'.$tmp[1].'">
 															</video>
 														</div>
+														<hr>
+														<form class="score_item" action="" method="POST">
+															<li>評分意見：</li>
+															<li>
+																<span class="score_title">1</span>
+																<span class="score_title">2</span>
+																<span class="score_title">3</span>
+																<span class="score_title">4</span>
+																<span class="score_title">5</span>
+															</li>
+															<li>
+																<input type="radio" name="score" value="1" checked>
+																<input type="radio" name="score" value="2">
+																<input type="radio" name="score" value="3">
+																<input type="radio" name="score" value="4">
+																<input type="radio" name="score" value="5">
+															</li>
+															<input type="hidden" name="pj_token" value="'.$pj_token.'">
+															<input type="hidden" name="score_key" value="'.$comment_list[$y]['score_key'].'">
+															<input type="submit" name="score_pj" value="評分">
+														</form>
 													</div>
 													';
 												}elseif($comment_list[$y]['comment_type'] === "audio"){
@@ -86,14 +118,34 @@ if(@$project->is_member($_SESSION['member'])){
 													<div class="view_comment">
 														<div>編號：'.$y.'</div>
 														<div>發表時間：'.$comment_list[$y]['created_time'].'</div>
-														<div>標題：'.$tmp[0].'</div>
-														<div>評分：</div>
-														<div>被評價總分：</div>
+														'.$project->getscore($comment_list[$y]['score_key']).'<hr>
+														<div style="font-size:20px;">標題：'.$tmp[0].'</div>
 														<div>說明：'.$tmp[2].'
 															<audio controls>
 																  <source src="./files/'.$tmp[1].'">
 															</audio>
 														</div>
+														<hr>
+														<form class="score_item" action="" method="POST">
+															<li>評分意見：</li>
+															<li>
+																<span class="score_title">1</span>
+																<span class="score_title">2</span>
+																<span class="score_title">3</span>
+																<span class="score_title">4</span>
+																<span class="score_title">5</span>
+															</li>
+															<li>
+																<input type="radio" name="score" value="1" checked>
+																<input type="radio" name="score" value="2">
+																<input type="radio" name="score" value="3">
+																<input type="radio" name="score" value="4">
+																<input type="radio" name="score" value="5">
+															</li>
+															<input type="hidden" name="pj_token" value="'.$pj_token.'">
+															<input type="hidden" name="score_key" value="'.$comment_list[$y]['score_key'].'">
+															<input type="submit" name="score_pj" value="評分">
+														</form>
 													</div>
 													';
 
@@ -102,12 +154,32 @@ if(@$project->is_member($_SESSION['member'])){
 													<div class="view_comment">
 														<div>編號：'.$y.'</div>
 														<div>發表時間：'.$comment_list[$y]['created_time'].'</div>
-														<div>標題：'.$tmp[0].'</div>
-														<div>評分：</div>
-														<div>被評價總分：</div>
+														'.$project->getscore($comment_list[$y]['score_key']).'<hr>
+														<div style="font-size:20px;">標題：'.$tmp[0].'</div>
 														<div>說明：'.$tmp[2].'
 															<img width="100%" src="./files/'.$tmp[1].'">
 														</div>
+														<hr>
+														<form class="score_item" action="" method="POST">
+															<li>評分意見：</li>
+															<li>
+																<span class="score_title">1</span>
+																<span class="score_title">2</span>
+																<span class="score_title">3</span>
+																<span class="score_title">4</span>
+																<span class="score_title">5</span>
+															</li>
+															<li>
+																<input type="radio" name="score" value="1" checked>
+																<input type="radio" name="score" value="2">
+																<input type="radio" name="score" value="3">
+																<input type="radio" name="score" value="4">
+																<input type="radio" name="score" value="5">
+															</li>
+															<input type="hidden" name="pj_token" value="'.$pj_token.'">
+															<input type="hidden" name="score_key" value="'.$comment_list[$y]['score_key'].'">
+															<input type="submit" name="score_pj" value="評分">
+														</form>
 													</div>
 													';
 
@@ -116,10 +188,30 @@ if(@$project->is_member($_SESSION['member'])){
 													<div class="view_comment">
 														<div>編號：'.$y.'</div>
 														<div>發表時間：'.$comment_list[$y]['created_time'].'</div>
-														<div>標題：'.$tmp[0].'</div>
-														<div>評分：</div>
-														<div>被評價總分：</div>
+														'.$project->getscore($comment_list[$y]['score_key']).'<hr>
+														<div style="font-size:20px;">標題：'.$tmp[0].'</div>
 														<div>說明：'.$tmp[1].'</div>
+														<hr>
+														<form class="score_item" action="" method="POST">
+															<li>評分意見：</li>
+															<li>
+																<span class="score_title">1</span>
+																<span class="score_title">2</span>
+																<span class="score_title">3</span>
+																<span class="score_title">4</span>
+																<span class="score_title">5</span>
+															</li>
+															<li>
+																<input type="radio" name="score" value="1" checked>
+																<input type="radio" name="score" value="2">
+																<input type="radio" name="score" value="3">
+																<input type="radio" name="score" value="4">
+																<input type="radio" name="score" value="5">
+															</li>
+															<input type="hidden" name="pj_token" value="'.$pj_token.'">
+															<input type="hidden" name="score_key" value="'.$comment_list[$y]['score_key'].'">
+															<input type="submit" name="score_pj" value="評分">
+														</form>
 													</div>
 													';
 												}
