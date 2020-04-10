@@ -10,14 +10,33 @@
 			break;
 			default: 
 				echo '
-					<ul>
-						<li>使用者管理</li>
-						<ul>
-							<li><a href="/lite/index.php">新增</a></li>
-							<li><a href="">刪除</a></li>
-							<li><a href="">修改</a></li>
-							<li><a href="">檢視</a></li>
-						</ul>
+					<ul style="display:flex;">
+						<li style="display:block;">使用者管理
+							<ul>
+								<li><a href="">新增</a></li>
+								<li><a href="">刪除</a></li>
+								<li><a href="">修改</a></li>
+								<li><a href="">檢視</a></li>
+							</ul>
+						</li>
+						<li style="display:block;">專案管理
+							<ul>
+								<li><a href="">新增</a></li>
+								<li><a href="">指定專案成員</a></li>
+								<li><a href="">修改專案成員</a></li>
+								<li><a href="">修改專案</a></li>
+								<li><a href="">刪除專案</a></li>
+								<li><a href="">檢視專案</a></li>
+							</ul>
+						</li>
+						<li style="display:block;">統計管理
+							<ul>
+								<li><a href="">新增</a></li>
+								<li><a href="">刪除</a></li>
+								<li><a href="">修改</a></li>
+								<li><a href="">檢視</a></li>
+							</ul>
+						</li>
 					</ul>
 				';
 			break;

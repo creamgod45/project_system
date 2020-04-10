@@ -8,7 +8,7 @@ if(@$project->is_adminstrator($_SESSION['adminstrator'])){
 		if($query){
 			echo '<H1>新增成功';
 			header('refresh:1;url="/admin.php"');
-		}else {
+		}else { 
 			echo '<H1>新增失敗';
 			header('refresh:1;url="/admin.php"');
 		}
