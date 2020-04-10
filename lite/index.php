@@ -4,7 +4,30 @@
 	<?php	
 	if(@ismember(sess('member'))){
 		if(@post('pj_enable')){
-			
+			$pj_token = post('pj_token');
+			$th_key = post('th_key');
+			$sj_list = squery(['getlist', "SELECT * FROM `subject` WHERE `project_token`='$pj_token' ORDER BY `theme_key` ASC"]);
+			$boolean = $sj_list[$th_key][5];
+			if($boolean === "true"){
+				$boolean = 'false';
+			}else{
+				$boolean = 'true';
+			}
+			result(
+				squery(
+					[
+						'run', 
+						"UPDATE `subject` SET `subject_enable`='$boolean' WHERE `theme_key` = '$th_key' AND `project_token` = '$pj_token'"
+					]
+				), 
+				[
+					'更改成功',
+					'更改失敗', 
+					1, 
+					'/lite/index.php?page=view_pj&token='.post('pj_token')
+				]
+			);
+
 		}elseif(@post('score_sj')){
 			$aid = sess('member')[1];
 			$score_key = post('score_key');
