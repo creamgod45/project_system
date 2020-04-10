@@ -42,6 +42,7 @@ if(@$project->is_member($_SESSION['member'])){
 	}elseif(@$_POST['setcomment']){
 		$project->setsubject([$_POST['th_key'],$_POST['pj_key']]);
 	}else{
+		
 		$pj_list = $project->getproject_arr();
 		echo '
 		<html>

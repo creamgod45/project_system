@@ -1,0 +1,95 @@
+for($i=1;$i<=;$i++){}
+for($y=1;$y<=;$y++){}
+
+result(
+	squery(
+		[
+			'', 
+			""
+		]
+	), 
+	[
+		'成功',
+		'失敗', 
+		1, 
+		'/lite/index.php?page=view_pj&token='.post('pj_token')
+	]
+);
+
+	define("keyw0", "專案討論系統");
+	define("keyw1" ,"面相");
+	define("keyw2" ,"面相說明");
+	define("keyw3" ,"專案名稱");
+	define("keyw4" ,"專案說明");
+	define("keyw5" ,"意見");
+	define("keyw6" ,"評分指標");
+	define("keyw7" ,"評分意見");
+	define("keyw9" ,"編號");
+	define("keyw10" ,"發表時間");
+	define("keyw11" ,"評分");
+	define("keyw12" ,"已被評價人數");
+	define("keyw13" ,"標題");
+	define("keyw14" ,"說明");
+	define("keyw15" ,"切換意見功能");
+
+CREATE TABLE `comment` (
+0  `id` int(255) NOT NULL,
+1  `access_token` varchar(255) COLLATE utf8_bin NOT NULL,
+2  `project_token` varchar(255) COLLATE utf8_bin NOT NULL,
+3  `theme_key` varchar(255) COLLATE utf8_bin NOT NULL,
+4  `score_key` varchar(255) COLLATE utf8_bin NOT NULL,
+5  `comment_type` varchar(20) COLLATE utf8_bin NOT NULL,
+6  `comment_content` longtext COLLATE utf8_bin NOT NULL,
+7  `created_time` varchar(20) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `member` (
+0  `id` int(255) NOT NULL,
+1  `access_token` varchar(255) COLLATE utf8_bin NOT NULL,
+2  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+3  `username` varchar(255) COLLATE utf8_bin NOT NULL,
+4  `password` varchar(255) COLLATE utf8_bin NOT NULL,
+5  `created_time` varchar(20) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `program` (
+0  `id` int(255) NOT NULL,
+1  `access_token` varchar(255) COLLATE utf8_bin NOT NULL,
+2  `score_key` varchar(255) COLLATE utf8_bin NOT NULL,
+3  `process` longtext COLLATE utf8_bin NOT NULL,
+4  `created_time` varchar(20) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `project` (
+0  `id` int(255) NOT NULL,
+1  `project_token` varchar(255) COLLATE utf8_bin NOT NULL,
+2  `project_title` varchar(255) COLLATE utf8_bin NOT NULL,
+3  `project_content` longtext COLLATE utf8_bin NOT NULL,
+4  `project_member` longtext COLLATE utf8_bin NOT NULL,
+5  `created_time` varchar(20) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `score` (
+0  `id` int(255) NOT NULL,
+1  `access_token` varchar(255) COLLATE utf8_bin NOT NULL,
+2  `score_key` varchar(255) COLLATE utf8_bin NOT NULL,
+3  `score` varchar(255) COLLATE utf8_bin NOT NULL,
+4  `created_time` varchar(20) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `score_index` (
+0  `id` int(255) NOT NULL,
+1  `access_token` varchar(255) COLLATE utf8_bin NOT NULL,
+2  `score_content` longtext COLLATE utf8_bin NOT NULL,
+3  `created_time` varchar(20) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `subject` (
+0  `id` int(255) NOT NULL,
+1  `project_token` varchar(255) COLLATE utf8_bin NOT NULL,
+2  `theme_key` int(255) NOT NULL,
+3  `subject_title` varchar(255) COLLATE utf8_bin NOT NULL,
+4  `subject_content` longtext COLLATE utf8_bin NOT NULL,
+5  `subject_enable` varchar(5) COLLATE utf8_bin NOT NULL,
+6  `created_time` varchar(20) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
