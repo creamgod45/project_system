@@ -13,39 +13,12 @@
 			}else{
 				$boolean = 'true';
 			}
-			result(
-				squery(
-					[
-						'run', 
-						"UPDATE `subject` SET `subject_enable`='$boolean' WHERE `theme_key` = '$th_key' AND `project_token` = '$pj_token'"
-					]
-				), 
-				[
-					'更改成功',
-					'更改失敗', 
-					1, 
-					'/lite/index.php?page=view_pj&token='.post('pj_token')
-				]
-			);
-
+			result(squery(['run', "UPDATE `subject` SET `subject_enable`='$boolean' WHERE `theme_key` = '$th_key' AND `project_token` = '$pj_token'"]), ['更改成功','更改失敗', 1, '/lite/index.php?page=view_pj&token='.post('pj_token')]);
 		}elseif(@post('score_sj')){
 			$aid = sess('member')[1];
 			$score_key = post('score_key');
 			$score = post('score');
-			result(
-				squery(
-					[
-						'run', 
-						"INSERT INTO `score`(`access_token`, `score_key`, `score`, `created_time`) VALUES ('$aid','$score_key','$score','$time')"
-					]
-				), 
-				[
-					'評價成功',
-					'評價失敗', 
-					1, 
-					'/lite/index.php?page=view_pj&token='.post('pj_token')
-				]
-			);
+			result(squery(['run', "INSERT INTO `score`(`access_token`, `score_key`, `score`, `created_time`) VALUES ('$aid','$score_key','$score','$time')"]), ['評價成功','評價失敗', 1, '/lite/index.php?page=view_pj&token='.post('pj_token')]);
 		}elseif(@post('cmt')){
 			$file = $_FILES['file'];
 			$dataurl = post('dataurl');
