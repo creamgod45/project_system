@@ -68,13 +68,13 @@
 								$cmt_list = squery(['getlist', "SELECT * FROM `comment` WHERE `theme_key` = '$th_key' AND `project_token` = '$pj_token'"]);
 								for($y=1;$y<=count($cmt_list);$y++){
 									$info = explode(':',$cmt_list[$y][6]);
-									if($cmt_list[$y][5] != "text"){
+									if($cmt_list[$y][5] === "video" and $cmt_list[$y][5] === "audio"){
 										echo '
 										<ul>
 											<div class="comment_item">
 												<div>'.keyw9.':'.$y.'</div>
 												<div>'.keyw10.':'.$cmt_list[$y][7].'</div>
-												'.getscore($cmt_list[$y][2]).'<hr>
+												'.getscore($cmt_list[$y][4]).'<hr>
 												<div><h2>'.keyw13.':'.$info[0].'</h2></div>
 												<div>'.keyw14.'：'.$info[2].'</div>
 												<div>
@@ -106,13 +106,49 @@
 											</div>
 										</ul>
 										';
+									}elseif($cmt_list[$y][5] === "image"){
+										echo '
+										<ul>
+											<div class="comment_item">
+												<div>'.keyw9.':'.$y.'</div>
+												<div>'.keyw10.':'.$cmt_list[$y][7].'</div>
+												'.getscore($cmt_list[$y][4]).'<hr>
+												<div><h2>'.keyw13.':'.$info[0].'</h2></div>
+												<div>'.keyw14.'：'.$info[2].'</div>
+												<div>
+													<img width="100%" src="./files/'.$info[1].'">
+												</div>
+												<hr>
+												<form class="score_item" action="" method="POST">
+													<li>評分意見：</li>
+													<li>
+														<span class="score_title">1</span>
+														<span class="score_title">2</span>
+														<span class="score_title">3</span>
+														<span class="score_title">4</span>
+														<span class="score_title">5</span>
+													</li>
+													<li>
+														<input type="radio" name="score" value="1" checked>
+														<input type="radio" name="score" value="2">
+														<input type="radio" name="score" value="3">
+														<input type="radio" name="score" value="4">
+														<input type="radio" name="score" value="5">
+													</li>
+													<input type="hidden" name="pj_token" value="'.$pj_token.'">
+													<input type="hidden" name="score_key" value="'.$cmt_list[$y]['score_key'].'">
+													<input type="submit" name="score_sj" value="評分">
+												</form>
+											</div>
+										</ul>
+										';
 									}else{
 										echo '
 										<ul>
 											<div class="comment_item">
 												<div>'.keyw9.':'.$y.'</div>
 												<div>'.keyw10.':'.$cmt_list[$y][7].'</div>
-												'.getscore($cmt_list[$y][2]).'<hr>
+												'.getscore($cmt_list[$y][4]).'<hr>
 												<div><h2>'.keyw13.':'.$info[0].'</h2></div>
 												<div>'.keyw14.'：'.$info[1].'</div>
 												<hr>
@@ -156,6 +192,8 @@
 											<input type="submit" name="cmt" value="發表意見">
 										</form>
 									';
+								}else{
+									echo '<div>關閉意見功能</div>';
 								}
 								echo'
 							</ul>

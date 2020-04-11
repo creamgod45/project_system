@@ -16,6 +16,50 @@ result(
 	]
 );
 
+
+if(@post('submit')){
+	result(
+		squery(
+			[
+				'', 
+				""
+			]
+		), 
+		[
+			'成功',
+			'失敗', 
+			1, 
+			'/lite/index.php?page=view_pj'
+		]
+	);
+}else{
+	echo '';
+}
+
+<table>
+	<tr>
+		<th></th>
+	</tr>
+	<tr>
+		<th></th>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<th></th>
+	</tr>';
+	$ = squery(['getlist', ""]);
+	for($i=1;$i<=count($);$i++){
+		echo '
+		<tr>
+			<th>'</th>
+		</tr>
+		';
+	}
+	echo '
+</table>
+
 	define("keyw0", "專案討論系統");
 	define("keyw1" ,"面相");
 	define("keyw2" ,"面相說明");
