@@ -215,11 +215,9 @@
 				}else{
 					echo '
 					<form action="" method="POST">
-						<input type="text" name="pj_name" placeholder="'.keyw3.'">
-						<input type="text" name="pj_dec" placeholder="'.keyw4.'">
 						<div>
-							<input id="sj_name_1" type="text" name="sj_name" placeholder="'.keyw1.'">
-							<input id="sj_dec_1" type="text" name="sj_dec" placeholder="'.keyw2.'">
+							<input type="text" name="pj_name" placeholder="'.keyw3.'">
+							<input type="text" name="pj_dec" placeholder="'.keyw4.'">
 						</div>
 						<div id="sj_box_add_pj"></div>
 						<a onclick="add_pj(\'add_pj\');" href="javascript:void(0);">新增面相</a>

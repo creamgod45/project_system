@@ -19,8 +19,16 @@ function php_subject_load(_layer, _array_val){
 }
 
 function add_pj(_layer){
-    if(pj_object[_layer].length<=10){
-        pj_object[_layer][pj_object[_layer].length]=["",""];
+    if(pj_object[_layer] == undefined){
+        pj_object[_layer]=[];
+        var num = pj_object[_layer].length;
+        pj_object[_layer][num]=["",""];
+        $("#sj_box_" + _layer.toString()).html("");
+		gen_subject(_layer);
+    }
+    var num = pj_object[_layer].length;
+    if(num<=10){
+        pj_object[_layer][num]=["",""];
         $("#sj_box_" + _layer.toString()).html("");
 		gen_subject(_layer);
     }
@@ -30,11 +38,12 @@ function gen_subject(_layer){
     var tmp1="";
     var tmp2="";
     var x=1;
+    if(pj_object[_layer][0] != undefined){
+        delete pj_object[_layer][0];
+    }
     for(var i=1;i<=10;i++){
         if(pj_object[_layer][i] != undefined){
-            for (const [key,value] of Object.entries(pj_object[_layer][i])) {
-                $("#sj_box_"+_layer.toString()).append('');
-            }
+            $("#sj_box_"+_layer.toString()).append('<div><input id="sj_name_'+i.toString()+'" type="text" name="sj_name" value="'+pj_object[_layer][i][0]+'" placeholder="面相"><input id="sj_dec_'+i.toString()+'" type="text" name="sj_dec" value="'+pj_object[_layer][i][1]+'" placeholder="面相說明"></div>');
         }
     }
 }

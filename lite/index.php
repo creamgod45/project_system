@@ -56,12 +56,23 @@
 						<div>';
 						for($i=1;$i<=count($sj_list);$i++){
 							echo '
-							<ul>
-								<form action="" method="POST">
-									<input type="hidden" name="th_key" value="'.$sj_list[$i][2].'">
-									<input type="hidden" name="pj_token" value="'.$pj_token.'">
-									<input type="submit" name="pj_enable" value="'.keyw15.'">
-								</form>
+							<ul>';
+								$result = pj_member(
+									[
+										sess('member'),
+										$pj_list[$i]
+									]
+								);
+								if($result[1]==="1"){
+									echo '
+									<form action="" method="POST">
+										<input type="hidden" name="th_key" value="'.$sj_list[$i][2].'">
+										<input type="hidden" name="pj_token" value="'.$pj_token.'">
+										<input type="submit" name="pj_enable" value="'.keyw15.'">
+									</form>
+									';
+								}
+								echo '
 								<div>'.keyw2.'：'.$sj_list[$i][3].'</div>
 								<div>'.keyw3.'：'.$sj_list[$i][4].'</div>';
 								$th_key = $sj_list[$i]['theme_key'];
