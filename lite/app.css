@@ -8,3 +8,8 @@ h1,h2,h3,h4,h5{margin: 0;padding:0;}
 .score_item .score_title {
     padding: 0px 7px;
 }
+
+table tr th {
+    width: auto;
+    padding: 16px;
+}

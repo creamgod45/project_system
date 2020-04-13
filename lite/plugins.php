@@ -181,6 +181,24 @@
 		}
 	}
 
+	function pj_member_c($string){
+		$x=0;
+		$str = "";
+		$a = obj_d($string);
+		for($i=1;$i<=count($a)-1;$i++){
+			if($a[$i][1]=="1"){
+				$str .= "專案組長：".$a[$i][0]."<br>";
+			}else{
+				if($x===0){
+					$x=1;
+					$str .= "專案組員：";
+				}
+				$str .= $a[$i][0]."<br>";
+			}
+		}
+		return $str;
+	}
+
 	function getscore($key){
 		$row = squery(['getlist', "SELECT * FROM `score` WHERE `score_key` = '$key'"]);
 		$num = count($row);

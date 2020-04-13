@@ -45,20 +45,26 @@ if(@post('submit')){
 	</tr>
 </table>
 
+$a = squery(
+	[
+		'getlist', 
+		"SELECT * FROM `project`"
+	]
+);
+echo '
 <table>
 	<tr>
 		<th></th>
 	</tr>';
-	$ = squery(['getlist', ""]);
-	for($i=1;$i<=count($);$i++){
-		echo '
-		<tr>
-			<th>'</th>
-		</tr>
-		';
-	}
+for($i=1;$i<=count($a);$i++){
 	echo '
-</table>
+	<tr>
+		<th></th>
+	</tr>
+	';
+}
+echo '
+</table>';
 
 	define("keyw0", "專案討論系統");
 	define("keyw1" ,"面相");

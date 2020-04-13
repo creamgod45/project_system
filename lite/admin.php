@@ -149,8 +149,85 @@
 				}
 			break;
 			case 'view_pj':
-				
+				$a = squery(
+					[
+						'getlist', 
+						"SELECT * FROM `project`"
+					]
+				);
+				echo '
+				<table>
+					<tr>
+						<th>專案名稱</th>
+						<th>專案說明</th>
+						<th>專案成員</th>
+						<th>專案面相</th>
+						<th>建立時間</th>
+					</tr>';
+				for($i=1;$i<=count($a);$i++){
+					echo '
+					<tr>
+						<th>'.$a[$i][2].'</th>
+						<th>'.$a[$i][3].'</th>
+						<th>'.pj_member_c($a[$i][4]).'</th>
+						<th>
+						';
+						$b = $a[$i][1];
+						$c = squery(
+							[
+								'getlist', 
+								"SELECT * FROM `subject` WHERE `project_token` = '$b'"
+							]
+						);
+						for($y=1;$y<=count($c);$y++){
+							echo '
+							<ul>
+								<li style="text-align:left;">面相標題：'.$c[$y][3].'</li>
+								<li style="text-align:left;">面相說明：'.$c[$y][4].'</li>
+							</ul>
+							';
+						}
+						echo '
+						</th>
+						<th>'.$a[$i][5].'</th>
+					</tr>
+					';
+				}
+				echo '
+				</table>';
 			break;
+			case 'add_pj':
+				if(@post('submit')){
+					result(
+						squery(
+							[
+								'', 
+								""
+							]
+						), 
+						[
+							'成功',
+							'失敗', 
+							1, 
+							'/lite/index.php?page=view_pj'
+						]
+					);
+				}else{
+					echo '
+					<form action="" method="POST">
+						<input type="text" name="pj_name" placeholder="'.keyw3.'">
+						<input type="text" name="pj_dec" placeholder="'.keyw4.'">
+						<div>
+							<input id="sj_name_1" type="text" name="sj_name" placeholder="'.keyw1.'">
+							<input id="sj_dec_1" type="text" name="sj_dec" placeholder="'.keyw2.'">
+						</div>
+						<div id="sj_box_add_pj"></div>
+						<a onclick="add_pj(\'add_pj\');" href="javascript:void(0);">新增面相</a>
+						<input type="submit" name="auth" value="登入">
+					</form>
+					';
+				}
+			break;			
 			case 'view_ct':
 				
 			break;
@@ -167,20 +244,20 @@
 						</li>
 						<li style="display:block;margin:0px 8px;">專案管理
 							<ul>
-								<li><a href="">新增</a></li>
-								<li><a href="">指定專案成員</a></li>
-								<li><a href="">修改專案成員</a></li>
-								<li><a href="">修改專案</a></li>
-								<li><a href="">刪除專案</a></li>
-								<li><a href="">檢視專案</a></li>
+								<li><a href="/lite/admin.php?page=add_pj">新增</a></li>
+								<li><a href="/lite/admin.php?page=">指定專案成員</a></li>
+								<li><a href="/lite/admin.php?page=">修改專案成員</a></li>
+								<li><a href="/lite/admin.php?page=">修改專案</a></li>
+								<li><a href="/lite/admin.php?page=">刪除專案</a></li>
+								<li><a href="/lite/admin.php?page=view_pj">檢視專案</a></li>
 							</ul>
 						</li>
 						<li style="display:block;margin:0px 8px;">統計管理
 							<ul>
-								<li><a href="">新增</a></li>
-								<li><a href="">刪除</a></li>
-								<li><a href="">修改</a></li>
-								<li><a href="">檢視</a></li>
+								<li><a href="/lite/admin.php?page=">新增</a></li>
+								<li><a href="/lite/admin.php?page=">刪除</a></li>
+								<li><a href="/lite/admin.php?page=">修改</a></li>
+								<li><a href="/lite/admin.php?page=">檢視</a></li>
 							</ul>
 						</li>
 					</ul>
