@@ -102,17 +102,17 @@
 	function v($var){var_dump($var);}
 
 	function obj_e($array){
-		$string = "";
+		$str = "";
 		foreach($array as $key => $value){
-			if($key===0){
-				$string .= $key .":".$value;
+			if($key === 0){
+				if($value[0]!=""){
+					$str .= $value[0].":".$value[1];
+				}
 			}else{
-				$string .= "/" . $key .":".$value;
+				$str .= "/". $value[0].":".$value[1];
 			}
 		}
-		unset ($key);
-		unset ($value);
-		return $string;
+		return $str;
 	}
 
 	function obj_d($string){

@@ -43,7 +43,20 @@ function gen_subject(_layer){
     }
     for(var i=1;i<=10;i++){
         if(pj_object[_layer][i] != undefined){
-            $("#sj_box_"+_layer.toString()).append('<div><input id="sj_name_'+i.toString()+'" type="text" name="sj_name" value="'+pj_object[_layer][i][0]+'" placeholder="面相"><input id="sj_dec_'+i.toString()+'" type="text" name="sj_dec" value="'+pj_object[_layer][i][1]+'" placeholder="面相說明"></div>');
+            $("#sj_box_"+_layer.toString()).append('<div><input id="sj_name_'+_layer.toString()+'_'+i.toString()+'" type="text" value="'+pj_object[_layer][i][0]+'" placeholder="面相"><input id="sj_dec_'+_layer.toString()+'_'+i.toString()+'" type="text" value="'+pj_object[_layer][i][1]+'" placeholder="面相說明"></div>');
         }
     }
+}
+
+function sj_load(_layer){
+    var string1="", string2="", str="";
+    for(var i =1;i<=10;i++){
+        string1 = $('#sj_name_'+_layer.toString()+'_'+i).val();
+        string2 = $('#sj_dec_'+_layer.toString()+'_'+i).val();
+        if(string1 != undefined && string2 != undefined){
+            str = str + "/" + string1 + ':' + string2;
+        }
+    }
+    $('#sj_array_'+_layer.toString()).attr('value', str);
+    return false;
 }

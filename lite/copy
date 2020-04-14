@@ -1,6 +1,11 @@
 for($i=1;$i<=;$i++){}
 for($y=1;$y<=;$y++){}
 
+<form action="" method="POST">
+	<input type="hidden" name="" value="">
+	<input type="submit" name="submit" value="送出">
+</form>
+
 result(
 	squery(
 		[
@@ -29,7 +34,7 @@ if(@post('submit')){
 			'成功',
 			'失敗', 
 			1, 
-			'/lite/index.php?page=view_pj'
+			'/lite/.php?page='
 		]
 	);
 }else{
