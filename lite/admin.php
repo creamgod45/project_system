@@ -320,27 +320,88 @@
 				}
 			break;
 			case 'set_pj':
-				
+				if(@post('submit')){
+					$a = post('pj_key');
+					$b = post('pj_name');
+					$c = post('pj_dec');
+					$d = obj_d(post('sj_array'));
+					$result = squery([
+						'run', 
+						"DELETE FROM `subject` WHERE `project_token` = '$a'"
+					]);
+					for($i=1;$i<=count($d)-1;$i++){
+						$e = $d[$i][0];
+						$f = $d[$i][1];
+						squery([
+							'run', 
+							"INSERT INTO `subject`(
+								`project_token`, 
+								`theme_key`, 
+								`subject_title`, 
+								`subject_content`, 
+								`subject_enable`, 
+								`created_time`
+							) VALUES (
+								'$a',
+								'$i',
+								'$e',
+								'$f',
+								'true',
+								'$time'
+							)"
+						]);
+					}
+					alert_text('編輯成功');
+					refresh([1,'/lite/admin.php?page=view_pj']);
+				}else{
+					$pj_list = squery(['getlist', "SELECT * FROM `project`"]);
+					for($i=1;$i<=count($pj_list);$i++){
+						echo '
+						<form action="" onsubmit="sj_load(\''.$pj_list[$i][1].'\');" method="POST">
+							<div>
+								<input type="text" name="pj_name" value="'.$pj_list[$i][2].'" placeholder="'.keyw3.'" required>
+								<input type="text" name="pj_dec" value="'.$pj_list[$i][3].'" placeholder="'.keyw4.'" required>
+							</div>';
+							$pj_key = $pj_list[$i][1];
+							$sj_list = squery(['getlist', "SELECT * FROM `subject` WHERE `project_token` = '$pj_key'"]);
+							echo '
+							<script>
+								var _layer = "'.$pj_list[$i][1].'";
+								pj_object[_layer]=[];
+								';
+								for($y=1;$y<=count($sj_list);$y++){
+									echo 'php_subject_load(_layer, {'.$y.':["'.$sj_list[$y][3].'","'.$sj_list[$y][4].'"]});';
+								}
+								echo '
+								setTimeout(() => {
+									gen_subject(_layer);
+								}, 100);
+							</script>
+							<div id="sj_box_'.$pj_list[$i][1].'"></div>
+							<a onclick="add_pj(\''.$pj_list[$i][1].'\');" href="javascript:void(0);">新增面相</a>
+							<input type="hidden" id="sj_array_'.$pj_list[$i][1].'" name="sj_array">
+							<input type="hidden" name="pj_key" value="'.$pj_list[$i][1].'">
+							<input type="submit" name="submit" value="編輯專案">
+						</form>
+						';
+					}
+				}
 			break;
 			case 'del_pj':
 				if(@post('submit')){
-					result(
-						squery(
-							[
-								'', 
-								""
-							]
-						), 
-						[
-							'成功',
-							'失敗', 
-							1, 
-							'/lite/.php?page='
-						]
-					);
+					$a = post('pj_key');
+					result(squery(['run', "DELETE FROM `project` WHERE `project_token` = '$a'"]),['刪除成功','刪除失敗', 1, '/lite/admin.php?page=view_pj']);
 				}else{
-					for($i=1;$i<=count($);$i++){}
-					echo '';
+					$a = squery(['getlist', "SELECT * FROM `project`"]);
+					for($i=1;$i<=count($a);$i++){
+						echo '
+						<form action="" method="POST">
+							<span>'.$a[$i][2].'</span>
+							<input type="hidden" name="pj_key" value="'.$a[$i][1].'">
+							<input type="submit" name="submit" value="刪除專案">
+						</form>
+						';
+					}
 				}
 			break;
 			default: 

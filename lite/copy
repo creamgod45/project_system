@@ -6,31 +6,26 @@ for($y=1;$y<=;$y++){}
 	<input type="submit" name="submit" value="送出">
 </form>
 
+
 result(
-	squery(
-		[
-			'', 
-			""
-		]
-	), 
-	[
+	squery([
+		'', 
+		""
+	]),[
 		'成功',
 		'失敗', 
 		1, 
-		'/lite/index.php?page=view_pj&token='.post('pj_token')
+		'/lite/.php?page='
 	]
 );
 
 
 if(@post('submit')){
 	result(
-		squery(
-			[
-				'', 
-				""
-			]
-		), 
-		[
+		squery([
+			'', 
+			""
+		]),[
 			'成功',
 			'失敗', 
 			1, 
