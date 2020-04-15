@@ -325,31 +325,11 @@
 					$b = post('pj_name');
 					$c = post('pj_dec');
 					$d = obj_d(post('sj_array'));
-					$result = squery([
-						'run', 
-						"DELETE FROM `subject` WHERE `project_token` = '$a'"
-					]);
+					$result = squery(['run', "DELETE FROM `subject` WHERE `project_token` = '$a'"]);
 					for($i=1;$i<=count($d)-1;$i++){
 						$e = $d[$i][0];
 						$f = $d[$i][1];
-						squery([
-							'run', 
-							"INSERT INTO `subject`(
-								`project_token`, 
-								`theme_key`, 
-								`subject_title`, 
-								`subject_content`, 
-								`subject_enable`, 
-								`created_time`
-							) VALUES (
-								'$a',
-								'$i',
-								'$e',
-								'$f',
-								'true',
-								'$time'
-							)"
-						]);
+						squery(['run', "INSERT INTO `subject`(`project_token`, `theme_key`, `subject_title`, `subject_content`, `subject_enable`, `created_time`) VALUES ('$a','$i','$e','$f','true','$time')"]);
 					}
 					alert_text('編輯成功');
 					refresh([1,'/lite/admin.php?page=view_pj']);
@@ -373,7 +353,7 @@
 									echo 'php_subject_load(_layer, {'.$y.':["'.$sj_list[$y][3].'","'.$sj_list[$y][4].'"]});';
 								}
 								echo '
-								setTimeout(() => {
+								setInterval(() => {
 									gen_subject(_layer);
 								}, 100);
 							</script>

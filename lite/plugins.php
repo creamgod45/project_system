@@ -67,6 +67,7 @@
 				}
 			break;
 		}
+		return false;
 	}
 
 	function result($boolean, $option){
@@ -133,6 +134,7 @@
 			<script src="core.js"></script>
 			<script src="app.js"></script>
 			<title>'.keyw0.'</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		</head>';
 	}
 
@@ -171,15 +173,7 @@
 			return false;
 		}
 	}
-
-	function pj_member($option){
-		$array = obj_d($option[1][4]);
-		for($i=1;$i<=count($array)-1;$i++){
-			if($array[$i][0] === $option[0][2]){
-				return [true,$array[$i][1]];
-			}
-		}
-	}
+	
 
 	function pj_member_c($string){
 		$x=0;
@@ -200,23 +194,22 @@
 	}
 
 	function getscore($key){
-		$row = squery(['getlist', "SELECT * FROM `score` WHERE `score_key` = '$key'"]);
-		$num = count($row);
+		$row = squery(['getlist', "SELECT AVG(`score`) FROM `score` WHERE `score_key` = '$key'"]);
+		$num = count(squery(['getlist', "SELECT * FROM `score` WHERE `score_key` = '$key'"]));
 		$score = 0;
 		if($num){
-			for($i=1;$i<=$num;$i++){
-				$score += $row[$i]['score'];
-			}
-			$score = $score / $num;
+			$score = $row[1][0];
 			return '
 			<div>'.keyw11.'：'.$score.'</div>
+			<div>被評價總分：'.$score*$num.'</div>
 			<div>'.keyw12.'：'.$num.'</div>
 			';
 		}else{
 			return '
 			<div>'.keyw11.'：0</div>
+			<div>被評價總分：0</div>
 			<div>'.keyw12.'：0</div>
-			';
+			';                                                                                                                                                                                                                                                                                                                                                       
 		}
 	}
 	

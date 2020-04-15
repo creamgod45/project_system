@@ -23,13 +23,11 @@ function add_pj(_layer){
         pj_object[_layer]=[];
         var num = pj_object[_layer].length;
         pj_object[_layer][num]=["",""];
-        $("#sj_box_" + _layer.toString()).html("");
 		gen_subject(_layer);
     }
     var num = pj_object[_layer].length;
     if(num<=10){
         pj_object[_layer][num]=["",""];
-        $("#sj_box_" + _layer.toString()).html("");
 		gen_subject(_layer);
     }
 }
@@ -41,6 +39,7 @@ function gen_subject(_layer){
     if(pj_object[_layer][0] != undefined){
         delete pj_object[_layer][0];
     }
+    $("#sj_box_"+_layer.toString()).html("");
     for(var i=1;i<=10;i++){
         if(pj_object[_layer][i] != undefined){
             $("#sj_box_"+_layer.toString()).append('<div><input required id="sj_name_'+_layer.toString()+'_'+i.toString()+'" type="text" value="'+pj_object[_layer][i][0]+'" placeholder="面相"><input required id="sj_dec_'+_layer.toString()+'_'+i.toString()+'" type="text" value="'+pj_object[_layer][i][1]+'" placeholder="面相說明"></div>');

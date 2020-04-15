@@ -45,6 +45,131 @@
 		}else{
 			@$pj_list = squery(['getlist', "SELECT * FROM `project` WHERE 1"]);
 			switch(@get('page')){
+				case 'createindex':
+					if(@post('submit')){
+						$a = post('title');
+						$b = post('content');
+						$c = sess('member')[1];
+						$d = get('token');
+						$e = $a.":".$b;
+						$f = token();
+						result(
+							squery([
+								'run', 
+								"INSERT INTO `score_index`(
+									`access_token`, 
+									`project_token`,
+									`key`,
+									`score_content`, 
+									`created_time`
+								) VALUES (
+									'$c',
+									'$d',
+									'$f',
+									'$e',
+									'$time'
+								)"
+							]),[
+								'建立成功',
+								'建立失敗', 
+								1, 
+								'/lite/index.php?page=view_pj&token='.$d
+							]
+						);
+					}else{
+						echo '
+						<form action="" method="POST">
+							<input type="text" name="title" placeholder="評分指標及配分"><br>
+							<textarea type="text" name="content" placeholder="指標說明"></textarea><br>
+							<input type="submit" name="submit" value="送出">
+						</form>
+						';
+					}
+				break;
+				case 'editindex':
+					if(@post('submit')){
+						$a = post('title');
+						$b = post('content');
+						$c = $a.":".$b;
+						$d = post('key');
+						$e = post('key1');
+						result(
+							squery([
+								'run', 
+								"UPDATE `score_index` SET `score_content`='$c' WHERE `key` = '$d'"
+							]),[
+								'成功',
+								'失敗', 
+								1, 
+								'/lite/index.php?page=view_pj&token='.$e
+							]
+						);
+					}else{
+						$pj_token = get('token');
+						echo '<table>
+						<tr>
+							<th style="text-align:left;">評分指標及配分</th>
+							<th style="text-align:left;">指標說明</th>
+						</tr>';
+						$a = squery([
+							'getlist', 
+							"SELECT * FROM `score_index` WHERE `project_token` = '$pj_token'"
+						]);
+						for($i=1;$i<=count($a);$i++){
+							$b = explode(':',$a[$i][4]);
+							echo '
+							<tr>
+								<th colspan="2">
+									<form action="" method="POST">
+										<input type="text" name="title" value="'.$b[0].'">
+										<input type="text" name="content" value="'.$b[1].'">
+										<input type="hidden" name="key" value="'.$a[$i]['key'].'">
+										<input type="hidden" name="key1" value="'.$a[$i][2].'">
+										<input type="submit" name="submit" value="編輯">
+									</form>
+								</th>
+							</tr>
+							';
+						}
+						echo '
+						</table>';
+					}
+				break;
+				case 'delindex':
+					if(@post('submit')){
+						$a = post('key');
+						$b = post('key1');
+						result(
+							squery([
+								'run', 
+								"DELETE FROM `score_index` WHERE `key` = '$a' and `project_token` = '$b'"
+							]),[
+								'成功',
+								'失敗', 
+								1, 
+								'/lite/index.php?page=view_pj&token='.$b                                            
+							]
+						);
+					}else{
+						$pj_token = get('token');
+						$a = squery([
+							'getlist', 
+							"SELECT * FROM `score_index` WHERE `project_token` = '$pj_token'"
+						]);
+						for($i=1;$i<=count($a);$i++){
+							$b = explode(':',$a[$i][4]);
+							echo '
+								<form action="" method="POST">
+									<div>'.$b[0].'</div>
+									<div>'.$b[1].'</div>
+									<input type="hidden" name="key" value="'.$a[$i]['key'].'">
+									<input type="hidden" name="key1" value="'.$a[$i][2].'">
+									<input type="submit" name="submit" value="刪除">
+								</form>
+							';
+						}
+					}
+				break;
 				case 'view_pj':
 					$pj_token = get('token');
 					$pj_item = squery(['get',"SELECT * FROM `project` WHERE `project_token` = '$pj_token'"]);
@@ -53,17 +178,46 @@
 					<ul>
 						<h2>'.keyw3.'：'.$pj_item[2].'</h2>
 						<b>'.keyw4.'：'.$pj_item[3].'</b>
+						<ul>
+							<h3>評分指標</h3>
+							<a href="index.php?page=createindex&token='.$pj_token.'">建立評分指標</a>
+							<a href="index.php?page=editindex&token='.$pj_token.'">修改評分指標</a>
+							<a href="index.php?page=delindex&token='.$pj_token.'">刪除評分指標</a>
+							<table>
+								<tr>
+									<th style="text-align:left;">評分指標及配分</th>
+									<th style="text-align:left;">指標說明</th>
+								</tr>';
+							$a = squery([
+								'getlist', 
+								"SELECT * FROM `score_index` WHERE `project_token` = '$pj_token'"
+							]);
+							for($i=1;$i<=count($a);$i++){
+								$b = explode(':',$a[$i][4]);
+								echo '
+								<tr>
+									<th style="text-align:left;">'.$b[0].'</th>
+									<th style="text-align:left;">'.$b[1].'</th>
+								</tr>
+								';
+							}
+							echo '
+							</table>
+							<hr>
+						</ul>
 						<div>';
 						for($i=1;$i<=count($sj_list);$i++){
 							echo '
 							<ul>';
-								$result = pj_member(
-									[
-										sess('member'),
-										$pj_list[$i]
-									]
-								);
-								if($result[1]==="1"){
+								$a = sess('member');
+								$b = $pj_item;
+								$c = obj_d($b[4]);
+								if(@$c[$i][0] === $a['name']){
+									if($c[$i][1]==="1"){
+										$result = true;
+									}
+								}
+								if(@$result){
 									echo '
 									<form action="" method="POST">
 										<input type="hidden" name="th_key" value="'.$sj_list[$i][2].'">
@@ -79,7 +233,7 @@
 								$cmt_list = squery(['getlist', "SELECT * FROM `comment` WHERE `theme_key` = '$th_key' AND `project_token` = '$pj_token'"]);
 								for($y=1;$y<=count($cmt_list);$y++){
 									$info = explode(':',$cmt_list[$y][6]);
-									if($cmt_list[$y][5] === "video" and $cmt_list[$y][5] === "audio"){
+									if($cmt_list[$y][5] === "video" or $cmt_list[$y][5] === "audio"){
 										echo '
 										<ul>
 											<div class="comment_item">
@@ -201,10 +355,10 @@
 											<input type="hidden" name="th_key" value="'.$sj_list[$i][2].'">
 											<input type="hidden" name="pj_token" value="'.$pj_token.'">
 											<input type="submit" name="cmt" value="發表意見">
-										</form>
+										</form><hr>
 									';
 								}else{
-									echo '<div>關閉意見功能</div>';
+									echo '<div>關閉意見功能</div><hr>';
 								}
 								echo'
 							</ul>
@@ -218,8 +372,13 @@
 				default: 
 					echo '<h1>專案列表</h1>';
 					for($i=1;$i<=count($pj_list);$i++){
-						$result = pj_member([sess('member'),$pj_list[$i]]);
-						if($result[0]){
+						$a = sess('member');
+						$b = $pj_list;
+						$c = obj_d($b[$i][4]);
+						if($c[$i][0] === $a['name']){
+							$result = true;
+						}
+						if($result){
 							echo '
 							<div>
 								<div>
