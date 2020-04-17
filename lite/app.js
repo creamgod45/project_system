@@ -22,8 +22,6 @@ function add_pj(_layer){
     if(pj_object[_layer] == undefined){
         pj_object[_layer]=[];
         var num = pj_object[_layer].length;
-        pj_object[_layer][num]=["",""];
-		gen_subject(_layer);
     }
     var num = pj_object[_layer].length;
     if(num<=10){
