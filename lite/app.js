@@ -27,7 +27,7 @@ function add_pj(_layer){
     }
     var num = pj_object[_layer].length;
     if(num<=10){
-        pj_object[_layer][num]=["",""];
+        pj_object[_layer][num]=["",""];0
 		gen_subject(_layer);
     }
 }
